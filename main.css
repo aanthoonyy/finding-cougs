@@ -1,0 +1,54 @@
+.mainArea {
+    border: 10px;
+    margin: 20px;
+    background-color: white;
+}
+.navbar {
+    border: 0px solid;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    background-color: white;
+}
+.navbarContent {
+    font-size: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+    align-items: center;
+    color: black;
+}
+.circle {
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+    background-color: lightgrey;
+    line-height: 17px;
+    font-size: 15px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin: 3px;    
+}
+.name {
+    font-size: 25px;
+    font-weight: 600px;
+    margin-left: 10px;
+}
+.info {
+    font-size: 15px;
+    font-weight: 400px;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+.heading {
+    font-size: 20px;
+    font-weight: 600px;
+    margin-top: 10px;
+}
+.rightAlign {
+    justify-content: right;
+}
+.back {
+    background-color: maroon;
+    padding-top: 20px;
+}
