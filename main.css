@@ -112,3 +112,25 @@
     margin-right: 10px;
     align-items: center;
 }
+.input {
+    margin: 10px;
+}
+.notif {
+    height: 70px;
+    background-color: lightgrey;
+    font-size: 15px;
+    align-items: center;
+    display: flex;
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+}
+.circle1 {
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    background-color: black;
+    align-items: center;
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+}
