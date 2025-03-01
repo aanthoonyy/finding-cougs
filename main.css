@@ -17,6 +17,10 @@
     align-items: center;
     color: black;
 }
+.navbarConentLink {
+    text-decoration: none;
+    color: black;
+}
 .circle {
     border-radius: 50%;
     height: 80px;
@@ -133,4 +137,8 @@
     display: flex;
     margin-left: 10px;
     margin-right: 10px;
+}
+.groupLink {
+    text-decoration: none;
+    color: black;
 }
