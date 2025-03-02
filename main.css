@@ -125,6 +125,7 @@
     font-size: 15px;
     align-items: center;
     display: flex;
+    text-align: left;
     margin-top: 10px; 
     margin-bottom: 10px; 
 }
@@ -141,4 +142,15 @@
 .groupLink {
     text-decoration: none;
     color: black;
+}
+.jobDescription {
+    font-size: 15px;
+    font-weight: 400px;
+    margin-top: 10px;
+    text-align: center;
+}
+.qualifications {
+    font-size: 10px;
+    text-align: center;
+    margin: 10px;
 }

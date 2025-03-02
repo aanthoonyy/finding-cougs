@@ -11,6 +11,9 @@ navbar = `
             <a href="notification.html" class="navbarConentLink">Notifications</a>
         </div>
         <div class="navbarContent">
+            <a href="job.html" class="navbarConentLink">Jobs</a>
+        </div>
+        <div class="navbarContent">
             <a href="profile.html" class="navbarConentLink">My Profile</a>
         </div>
         <div class="navbarContent">
