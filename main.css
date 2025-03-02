@@ -154,3 +154,7 @@
     text-align: center;
     margin: 10px;
 }
+.linkDefault {
+    text-decoration: none;
+    color: black;
+}
