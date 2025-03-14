@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 
-mongoose.connect("mongodb+srv://anthony:TOcOGhI3BFEdPOAk@cluster0.knetr.mongodb.net/sample_mflix?retryWrites=true&w=majority");
+mongoose.connect("");
 
 const UserSchema = new mongoose.Schema({
   name: {
