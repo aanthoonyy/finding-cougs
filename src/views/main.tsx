@@ -1,8 +1,18 @@
-import * as React from 'react';
-import './main.css';
+// import { StrictMode } from 'react'
+// import { createRoot } from 'react-dom/client'
+import '../css files/index.css'
+// import App from './css files/App.css'
+import '../css files/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Layout() {
+// createRoot(document.getElementById('root')!).render(
+//   <StrictMode>
+//     <App />
+//   </StrictMode>,
+// )
+
+
+function homePage() {
   return (
     <div className="container-fluid p-0">
       <div id="navbar"></div>
@@ -49,11 +59,4 @@ function Layout() {
     </div>
   )
 };
-{/* // Main App component that renders the Layout */}
-export default function MyApp() {
-  return (
-    <div>
-      <Layout />
-    </div>
-  )
-}
+export default homePage;
