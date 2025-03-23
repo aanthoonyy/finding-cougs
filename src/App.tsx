@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 function App() {
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState([]);
@@ -25,7 +26,7 @@ function App() {
 
     let result = await fetch("http://localhost:5000/register", {
       method: "POST",
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, username, email, password }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -37,6 +38,7 @@ function App() {
     if (result) {
       alert("Data saved successfully");
       setName("");
+      setUsername("");
       setEmail("");
       setPassword("");
 
@@ -53,6 +55,12 @@ function App() {
           placeholder="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="email"
@@ -78,7 +86,8 @@ function App() {
         {users.map((user) => (
           <li key={user._id}>
             <strong>Name:</strong> {user.name} &nbsp;|&nbsp;
-            <strong>Password:</strong> {user.password}
+            <strong>Password:</strong> {user.password} &nbsp;|&nbsp;
+            <strong>username:</strong> {user.username} 
           </li>
         ))}
       </ul>

@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-
+require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 
-const userRoutes = require('./routes/userRoutes.ts');
+const userRoutes = require('./routes/userRoutes.js');
+const config = require('./config.json');
 
 mongoose
   .connect(
-    process.env.MONGODB_URI,
+    config.MONGO_URI,
     {
       dbName: 'sample_mflix',
       useNewUrlParser: true,

@@ -1,4 +1,3 @@
-// routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
 
@@ -10,10 +9,6 @@ router.post('/register', async (req, res) => {
     let result = await user.save();
 
     result = result.toObject();
-
-    if (result.password) {
-      delete result.password;
-    }
 
     res.send(result);
     console.log('User saved:', result);
