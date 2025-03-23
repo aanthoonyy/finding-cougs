@@ -1,6 +1,7 @@
 import '../css files/index.css';
 import '../css files/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../routes/script';
 function Job() {
     return (
         <div className="container-fluid  p-0">

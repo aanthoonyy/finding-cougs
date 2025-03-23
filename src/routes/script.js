@@ -1,4 +1,4 @@
-navbar = `
+let navbar = `
 <div class="row navbar">
     <div class="col d-flex rightAlign">
         <div class="navbarContent">
@@ -23,7 +23,7 @@ navbar = `
 </div>
 `;
 
-footer = `
+let footer = `
 <div class="row footer">
 </div>
 `;

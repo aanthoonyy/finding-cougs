@@ -4,6 +4,7 @@ import '../css files/index.css'
 // import App from './css files/App.css'
 import '../css files/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../routes/script';
 
 // createRoot(document.getElementById('root')!).render(
 //   <StrictMode>
@@ -12,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // )
 
 
-function homePage() {
+function HomePage() {
   return (
     <div className="container-fluid p-0">
       <div id="navbar"></div>
@@ -59,4 +60,4 @@ function homePage() {
     </div>
   )
 };
-export default homePage;
+export default HomePage;

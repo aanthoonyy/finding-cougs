@@ -2,14 +2,39 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './css files/App.css';
-import homePage from './views/main';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css files/main.css';
 // import * as React from 'react';
-import { createRoot } from 'react-dom/client';
-import React from 'react';
+// import { createRoot } from 'react-dom/client';
+// import React from 'react';
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Pages
+import HomePage from './views/main';
+import Network from './views/network';
+import Group from './views/group';
+import Layout from './views/Layout';
+import Job from './views/job';
+import Notification from './views/notification';
+import Profile from './views/profile';
+
 
 function App() {
+  return (
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="network" element={<Network />} />
+        <Route path="group" element={<Group />} />
+        <Route path="job" element={<Job />} />
+        <Route path="notification" element={<Notification />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
+    </Routes>
+    </BrowserRouter>
+  )
   // const [count, setCount] = useState(0)
   // const homePage = () => {
   //   console.log("homePage is called")
@@ -18,10 +43,10 @@ function App() {
   //   <button onClick={homePage}>Call homePage</button>
   // )
 
-return (
-  homePage()
-  // <homePage />
-)
+// return (
+//   homePage()
+//   // <homePage />
+// )
 
   // return (
   //   <>

@@ -1,6 +1,7 @@
 import '../css files/index.css'
 import '../css files/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../routes/script';
 
 function AdminJobs () {
   return (
