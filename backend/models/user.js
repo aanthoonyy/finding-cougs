@@ -18,6 +18,25 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
   },
+  posts: [
+    {
+      text: String,
+      createdAt: { type: Date, default: Date.now },
+    }
+  ],
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users',
+      default: [],
+    }
+  ],
+  following: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users', 
+    }
+  ],
 });
 
 UserSchema.index({ email: 1 }, { unique: true });
