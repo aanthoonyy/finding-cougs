@@ -1,22 +1,27 @@
-import { StrictMode } from 'react'
-// useState
+// import { StrictMode, useState } from 'react';
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-import './css files/App.css'
-import homePage from '../views/main.tsx';
+import './css files/App.css';
+import homePage from './views/main';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css files/main.css';
 // import * as React from 'react';
-import { createRoot } from 'react-dom/client'
+import { createRoot } from 'react-dom/client';
+import React from 'react';
 
 function App() {
   // const [count, setCount] = useState(0)
   // const homePage = () => {
   //   console.log("homePage is called")
   // }
-  return (
-    <button onClick={homePage}>Call homePage</button>
-  )
+  // return (
+  //   <button onClick={homePage}>Call homePage</button>
+  // )
+
+return (
+  homePage()
+  // <homePage />
+)
 
   // return (
   //   <>
@@ -44,12 +49,12 @@ function App() {
   //   </>
   // )
 }
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
-export default App
+// createRoot(document.getElementById('root')!).render(
+//   <StrictMode>
+//     <App />
+//   </StrictMode>,
+// )
+export default App;
 
 // {/* // Main App component that renders the Layout */}
 // function MyApp() {

@@ -34,7 +34,7 @@ function AdminModerate () {
           <textarea
             className="form-control"
             id="moderationComment"
-            rows="3"
+            rows={3}
             placeholder="Enter comments or actions..."
           ></textarea>
         </div>

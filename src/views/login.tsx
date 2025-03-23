@@ -11,7 +11,8 @@ function Login() {
                 <div className="col mainArea text-center">
                     Login
                     <form> 
-                        <fieldset legend="Login">
+                        <fieldset>
+                            <legend>Login</legend>
                             <div className="input input-group mb-3">
                                 <input type="text" className="form-control" id="name" name="name" placeholder="Your username"/>
                             </div>

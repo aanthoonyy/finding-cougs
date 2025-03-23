@@ -21,7 +21,7 @@ function AdminJobs () {
           <textarea
             className="form-control"
             id="jobDescription"
-            rows="4"
+            rows={4}
             placeholder="Enter job description"
           ></textarea>
         </div>
