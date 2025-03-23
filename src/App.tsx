@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/users");
+      const data = await response.json();
+      setUsers(data);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+    }
+  };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    // Post name, email, and password
     let result = await fetch("http://localhost:5000/register", {
-      method: "post",
+      method: "POST",
       body: JSON.stringify({ name, email, password }),
       headers: {
         "Content-Type": "application/json",
@@ -18,13 +32,15 @@ function App() {
     });
 
     result = await result.json();
-    console.warn(result);
+    console.warn("Register result:", result);
 
     if (result) {
       alert("Data saved successfully");
       setName("");
       setEmail("");
       setPassword("");
+
+      fetchUsers();
     }
   };
 
@@ -44,7 +60,6 @@ function App() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {/* New password field */}
         <input
           type="password"
           placeholder="password"
@@ -55,6 +70,18 @@ function App() {
           Submit
         </button>
       </form>
+
+      <hr />
+
+      <h2>Registered Users (Testing Only)</h2>
+      <ul>
+        {users.map((user) => (
+          <li key={user._id}>
+            <strong>Name:</strong> {user.name} &nbsp;|&nbsp;
+            <strong>Password:</strong> {user.password}
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
