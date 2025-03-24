@@ -1,0 +1,14 @@
+.primary {
+    background-color: maroon;
+    background-size: cover;
+}
+.secondary {
+    background-color: white;
+}
+.text {
+    color: black;
+}
+.placeholder {
+    color: lightgrey;
+    background-color: lightgray;
+}

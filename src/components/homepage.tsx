@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import '../design/main.css';
+import '../design/colors.css';
+import '../design/shapes.css';
+import '../design/alignment.css';
+import '../design/text.css';
+import { Bar } from './script';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Homepage() {
   const [user, setUser] = useState(null);
@@ -131,105 +138,90 @@ function Homepage() {
   }
 
   return (
-    <div>
-      <h1>Welcome, {user.name || user.email}!</h1>
-
-      <form onSubmit={handleCreatePost}>
-        <textarea
-          placeholder="What's on your mind?"
-          value={postText}
-          onChange={(e) => setPostText(e.target.value)}
-        />
-        <br />
-        <button type="submit">Create Post</button>
-      </form>
-
-      <hr />
-
-      <h2>Your Posts</h2>
-      <ul>
-        {user.posts?.map((p, index) => (
-          <li key={index}>
-            {p.text} (Created: {new Date(p.createdAt).toLocaleString()})
-          </li>
-        ))}
-      </ul>
-
-      <hr />
-
-      <h2>Search for People</h2>
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Enter a name or username"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
-      <div>
-        {searchResults.map((result) => (
-          <div key={result._id}>
-            <strong>{result.username}</strong> ({result.name})
-            {result._id !== user._id &&
-              !user.following?.some((f) => f._id === result._id) && (
-                <button onClick={() => handleFollow(result._id)}>
-                  Follow
-                </button>
-              )}
-          </div>
-        ))}
-      </div>
-
-      <hr />
-
-      <h2>Following</h2>
-      {user.following && user.following.length > 0 ? (
-        <ul>
-          {user.following.map((followedUser) => (
-            <li key={followedUser._id}>
-              {followedUser.username} ({followedUser.name})
-            </li>
+    <div className="container-fluid p-0 primary">
+        <form onSubmit={handleSearch} className="padding10">
+          <input
+            type="text"
+            placeholder="Search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)} 
+            className="margin10 bodyText"/>
+          <button type="submit" className="buttonText">Search</button>
+        </form>
+        <div>
+          {searchResults.map((result) => (
+            <div key={result._id}>
+              <strong>{result.username}</strong> ({result.name})
+              {result._id !== user._id &&
+                !user.following?.some((f) => f._id === result._id) && (
+                  <button onClick={() => handleFollow(result._id)}>
+                    Follow
+                  </button>
+                )}
+            </div>
           ))}
-        </ul>
-      ) : (
-        <p>You are not following anyone yet.</p>
-      )}
+        </div>
+      <div id="navbar"></div>
+      {/* <h1>{{ navbar }}</h1> */}
+      {/* < Bar.navbar /> */}
+        <div className="row paddingTop20">
+          <div className="col-5 border10 margin20 secondary">
+            <div className="circle text-center">
+              <div>profile picture</div>
+            </div>
+            <div className="name">{user.name || user.email}</div>
 
-      <hr />
-
-      <h2>Followers</h2>
-      {user.followers && user.followers.length > 0 ? (
-        <ul>
-          {user.followers.map((follower) => (
-            <li key={follower._id}>
-              {follower.username} ({follower.name})
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No one is following you yet.</p>
-      )}
-
-      <hr />
-
-      <h2>Feed</h2>
-      {Array.isArray(feed) &&
-        feed.map((u) => (
-          <div key={u._id}>
-            <h3>
-              {u.name} (@{u.username})
-            </h3>
-            <ul>
-              {u.posts?.map((post: any, idx: any) => (
-                <li key={idx}>
-                  {post.text} - {new Date(post.createdAt).toLocaleString()}
-                </li>
-              ))}
-            </ul>
-            <hr />
+            <div className="bodyText marginLeft10 marginTop20">
+              Personal Information
+            </div>
+            <div className="bodyText marginLeft10 marginTop20">
+              Email: {user.email}
+            </div>
           </div>
-        ))}
+          <div className="col margin20 secondary center">
+            <div className="heading">
+            <form onSubmit={handleCreatePost}>
+              <textarea
+                placeholder="What's on your mind?"
+                value={postText}
+                onChange={(e) => setPostText(e.target.value)} 
+                className="bodyText"/>
+              <br />
+              <button type="submit" className="buttonText">Create Post</button>
+            </form>
+              <div className="feed marginBottom10 center marginTop10">
+                <div className="row">
+                <h2 className="heading text">Your Posts</h2>
+                  <ul>
+                    {user.posts?.map((p, index) => (
+                      <li key={index}>
+                        {p.text} (Created: {new Date(p.createdAt).toLocaleString()})
+                      </li>
+                    ))}
+                  </ul>
+                  </div>
+              </div>
+              <h2 className="heading">Feed</h2>
+                    {Array.isArray(feed) &&
+                      feed.map((u) => (
+                        <div key={u._id}>
+                          <h3 className="bodyText">
+                            {u.name} (@{u.username})
+                          </h3>
+                          <ul className="bodyText">
+                            {u.posts?.map((post: any, idx: any) => (
+                              <li key={idx}>
+                                {post.text} - {new Date(post.createdAt).toLocaleString()}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+            </div>
+          </div>
+        </div>
+
+      <div id="footer"></div>
     </div>
   );
 }
