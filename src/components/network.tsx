@@ -9,7 +9,7 @@ import '../design/text.css';
 import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Homepage() {
+function Network() {
   const [user, setUser] = useState(null);
   const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
@@ -43,32 +43,6 @@ function Homepage() {
     } catch (err) {
       console.error("Error fetching user:", err);
       navigate("/login");
-    }
-  };
-
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
-    if (!user) return;
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${user._id}/posts`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: postText }),
-        }
-      );
-      const updatedUser = await response.json();
-
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-
-      setPostText("");
-      alert("Post created successfully!");
-    } catch (err) {
-      console.error("Error creating post:", err);
-      alert("Failed to create post");
     }
   };
 
@@ -126,11 +100,6 @@ function Homepage() {
       console.error("Error fetching feed:", err);
     }
   };
-
-  // const navigationBar = async (e) => {
-  //   return Bar()
-  // }
-
   const gotoHome = async (e) => {
     navigate("/homepage");
   }
@@ -146,7 +115,10 @@ function Homepage() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
-
+  const grabGroup = async (e) => {
+    //replace with getting group id and displaying it
+    navigate("/network/group")
+  }
   useEffect(() => {
     if (user) {
       fetchFeed();
@@ -158,7 +130,7 @@ function Homepage() {
   }
 
   return (
-    <div className="container-fluid p-0 primary">
+    <div className="container-fluid  p-0 primary">
         <form onSubmit={handleSearch} className="padding10">
           <input
             type="text"
@@ -181,12 +153,11 @@ function Homepage() {
             </div>
           ))}
         </div>
-      <div id="navbar"></div>
-      <div className="row navbar">
+        <div id="navbar"></div>
+        <div className="row navbar">
         <div className="col d-flex rightAlign">
             <div className="navbarContent text bodyText">
                 <a onClick={gotoHome} className="navbarConentLink text">Home</a>
-                {/* <a href="main.html" className="navbarConentLink text">Home</a> */}
             </div>
             <div className="navbarContent text bodyText">
                 <a onClick={gotoNet} className="navbarConentLink text">Groups</a>
@@ -201,70 +172,50 @@ function Homepage() {
                 <a onClick={gotoProfile} className="navbarConentLink text">My Profile</a>
             </div>
         </div>
-      </div>
-      {/* {navigationBar} */}
-      {/* <h1>{{ navbar }}</h1> */}
-      {/* < Bar.navbar /> */}
-        <div className="row paddingTop20">
-          <div className="col-5 border10 margin20 secondary">
-            <div className="circle text-center">
-              <div>profile picture</div>
-            </div>
-            <div className="name">{user.name || user.email}</div>
+        </div>
+            <div className="row paddingTop20">
+                <div className="col border10 margin20 secondary text-center">
+                    <div className="heading">My Groups</div>
+                    <div className="notif">
+                        <div className="circle1"></div>
+                        <a onClick={grabGroup} className="groupLink text">Group 1</a>
+                    </div>
+                    <div className="notif">
+                        <div className="circle1"></div>
+                        <a onClick={grabGroup} className="groupLink text">Group 2</a>
+                    </div>
+                    <div className="notif">
+                        <div className="circle1"></div>
+                        <a onClick={grabGroup} className="groupLink text">Group 3</a>
+                    </div>
+                    <div className="notif">
+                        <div className="circle1"></div>
+                        <a onClick={grabGroup} className="groupLink text">Group 4</a>
+                    </div>
 
-            <div className="bodyText marginLeft10 marginTop20">
-              Personal Information
-            </div>
-            <div className="bodyText marginLeft10 marginTop20">
-              Email: {user.email}
-            </div>
-          </div>
-          <div className="col margin20 secondary center">
-            <div className="heading">
-            <form onSubmit={handleCreatePost}>
-              <textarea
-                placeholder="What's on your mind?"
-                value={postText}
-                onChange={(e) => setPostText(e.target.value)} 
-                className="bodyText"/>
-              <br />
-              <button type="submit" className="buttonText">Create Post</button>
-            </form>
-              <div className="feed marginBottom10 center marginTop10">
-                <div className="row">
-                <h2 className="heading text">Your Posts</h2>
-                  <ul>
-                    {user.posts?.map((p, index) => (
-                      <li key={index}>
-                        {p.text} (Created: {new Date(p.createdAt).toLocaleString()})
-                      </li>
-                    ))}
-                  </ul>
-                  </div>
-              </div>
-              <h2 className="heading">Feed</h2>
-                    {Array.isArray(feed) &&
-                      feed.map((u) => (
-                        <div key={u._id}>
-                          <h3 className="bodyText">
-                            {u.name} (@{u.username})
-                          </h3>
-                          <ul className="bodyText">
-                            {u.posts?.map((post: any, idx: any) => (
-                              <li key={idx}>
-                                {post.text} - {new Date(post.createdAt).toLocaleString()}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-            </div>
-          </div>
+                    <div className="heading">Recommended Groups</div>
+                    <div className="notif">
+                        <div className="circle1"></div>
+                        <a onClick={grabGroup} className="groupLink text">Group 1</a>
+                    </div>
+                    <div className="notif">
+                        <div className="circle1"></div>
+                        <a onClick={grabGroup} className="groupLink text">Group 2</a>
+                    </div>
+                    <div className="notif">
+                        <div className="circle1"></div>
+                        <a onClick={grabGroup} className="groupLink text">Group 3</a>
+                    </div>
+                    <div className="notif">
+                        <div className="circle1"></div>
+                        <a onClick={grabGroup} className="groupLink text">Group 4</a>
+                    </div>
+                </div>
         </div>
 
-      <div id="footer"></div>
+        <div id="footer"></div>
     </div>
   );
 }
 
-export default Homepage;
+export default Network;

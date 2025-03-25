@@ -31,9 +31,7 @@
     font-weight: 600px;
     margin-top: 10px;
 } */
-/* .rightAlign {
-    justify-content: right;
-} */
+
 /* .back {
     background-color: maroon;
     padding-top: 20px;
@@ -76,7 +74,7 @@
 } */
 .notif {
     height: 70px;
-    background-color: lightgrey;
+    /* background-color: lightgrey; */
     font-size: 15px;
     align-items: center;
     display: flex;
