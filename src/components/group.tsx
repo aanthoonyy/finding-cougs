@@ -140,6 +140,9 @@ function Group() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
+  const createPost = async (e) => {
+    navigate("/profile/post")
+  }
   useEffect(() => {
     if (user) {
       fetchFeed();
@@ -151,8 +154,8 @@ function Group() {
   }
 
   return (
-    <div className="container-fluid  p-0 primary">
-        <form onSubmit={handleSearch} className="padding10">
+    <div className="primary">
+        <form onSubmit={handleSearch} className="padding10 rightAlign">
           <input
             type="text"
             placeholder="Search"
@@ -161,20 +164,19 @@ function Group() {
             className="margin10 bodyText"/>
           <button type="submit" className="buttonText">Search</button>
         </form>
-        <div>
+        <div className="leftAlign">
           {searchResults.map((result) => (
-            <div key={result._id}>
-              <strong>{result.username}</strong> ({result.name})
+            <div key={result._id} className="bodyText secondary margin10 padding10">
               {result._id !== user._id &&
                 !user.following?.some((f) => f._id === result._id) && (
-                  <button onClick={() => handleFollow(result._id)}>
+                  <button onClick={() => handleFollow(result._id)} className="buttonText marginLeft10">
                     Follow
                   </button>
                 )}
+              <strong>{result.username}</strong> ({result.name})
             </div>
           ))}
         </div>
-        <div id="navbar"></div>
         <div className="row navbar">
         <div className="col d-flex rightAlign">
             <div className="navbarContent text bodyText">
@@ -194,7 +196,7 @@ function Group() {
             </div>
         </div>
         </div>
-        <div className="row paddingTop20">
+        <div className="row paddingTop20 center">
                 <div className="col border10 margin20 secondary text-center">
                     <div className="headPhoto">Head Photo</div>
                     <div className="name">Group Name</div>
@@ -208,15 +210,7 @@ function Group() {
                     </div>
                     <div className="row center marginTop10 marginBottom10">
                     <div className="col d-flex center">
-                    <form onSubmit={handleCreatePost}>
-                    <textarea
-                        placeholder="What's on your mind?"
-                        value={postText}
-                        onChange={(e) => setPostText(e.target.value)} 
-                        className="bodyText"/>
-                    <br />
-                    <button type="submit" className="buttonText">Create Post</button>
-                    </form>
+                    <button onClick={createPost} type="submit" className="buttonText">Create Post</button>
                     </div>
                 </div>
 
@@ -239,8 +233,6 @@ function Group() {
                 </div>
                 <div className="col-2"></div>
               </div>
-
-        <div id="footer"></div>
     </div> 
   );
 }

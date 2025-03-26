@@ -130,8 +130,8 @@ function Network() {
   }
 
   return (
-    <div className="container-fluid  p-0 primary">
-        <form onSubmit={handleSearch} className="padding10">
+    <div className="primary">
+        <form onSubmit={handleSearch} className="padding10 rightAlign">
           <input
             type="text"
             placeholder="Search"
@@ -140,20 +140,19 @@ function Network() {
             className="margin10 bodyText"/>
           <button type="submit" className="buttonText">Search</button>
         </form>
-        <div>
+        <div className="leftAlign">
           {searchResults.map((result) => (
-            <div key={result._id}>
-              <strong>{result.username}</strong> ({result.name})
+            <div key={result._id} className="bodyText secondary margin10 padding10">
               {result._id !== user._id &&
                 !user.following?.some((f) => f._id === result._id) && (
-                  <button onClick={() => handleFollow(result._id)}>
+                  <button onClick={() => handleFollow(result._id)} className="buttonText marginLeft10">
                     Follow
                   </button>
                 )}
+              <strong>{result.username}</strong> ({result.name})
             </div>
           ))}
         </div>
-        <div id="navbar"></div>
         <div className="row navbar">
         <div className="col d-flex rightAlign">
             <div className="navbarContent text bodyText">
@@ -175,7 +174,7 @@ function Network() {
         </div>
             <div className="row paddingTop20">
                 <div className="col border10 margin20 secondary text-center">
-                    <div className="heading">My Groups</div>
+                    <h3 className="heading text">My Groups</h3>
                     <div className="notif">
                         <div className="circle1"></div>
                         <a onClick={grabGroup} className="groupLink text">Group 1</a>
@@ -193,7 +192,7 @@ function Network() {
                         <a onClick={grabGroup} className="groupLink text">Group 4</a>
                     </div>
 
-                    <div className="heading">Recommended Groups</div>
+                    <h3 className="heading text">Recommended Groups</h3>
                     <div className="notif">
                         <div className="circle1"></div>
                         <a onClick={grabGroup} className="groupLink text">Group 1</a>
@@ -212,8 +211,6 @@ function Network() {
                     </div>
                 </div>
         </div>
-
-        <div id="footer"></div>
     </div>
   );
 }

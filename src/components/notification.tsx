@@ -128,7 +128,7 @@ function Notification() {
 
   return (
     <div className="container-fluid  p-0 primary">
-        <form onSubmit={handleSearch} className="padding10">
+        <form onSubmit={handleSearch} className="padding10 rightAlign">
           <input
             type="text"
             placeholder="Search"
@@ -137,16 +137,16 @@ function Notification() {
             className="margin10 bodyText"/>
           <button type="submit" className="buttonText">Search</button>
         </form>
-        <div>
+        <div className="leftAlign">
           {searchResults.map((result) => (
-            <div key={result._id}>
-              <strong>{result.username}</strong> ({result.name})
+            <div key={result._id} className="bodyText secondary margin10 padding10">
               {result._id !== user._id &&
                 !user.following?.some((f) => f._id === result._id) && (
-                  <button onClick={() => handleFollow(result._id)}>
+                  <button onClick={() => handleFollow(result._id)} className="buttonText marginLeft10">
                     Follow
                   </button>
                 )}
+              <strong>{result.username}</strong> ({result.name})
             </div>
           ))}
         </div>
@@ -172,7 +172,7 @@ function Notification() {
         </div>
         <div className="row paddingTop20">
             <div className="col border10 margin20 secondary text-center">
-                <div className="heading">Notifications</div>
+                <h3 className="heading text">Notifications</h3>
                 <div className="notif">
                     <div className="circle1"></div>
                     Notification 1

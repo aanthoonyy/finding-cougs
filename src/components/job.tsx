@@ -128,7 +128,7 @@ function Job() {
 
   return (
     <div className="container-fluid  p-0 primary">
-        <form onSubmit={handleSearch} className="padding10">
+        <form onSubmit={handleSearch} className="padding10 rightAlign">
           <input
             type="text"
             placeholder="Search"
@@ -137,16 +137,16 @@ function Job() {
             className="margin10 bodyText"/>
           <button type="submit" className="buttonText">Search</button>
         </form>
-        <div>
+        <div className="leftAlign">
           {searchResults.map((result) => (
-            <div key={result._id}>
-              <strong>{result.username}</strong> ({result.name})
+            <div key={result._id} className="bodyText secondary margin10 padding10">
               {result._id !== user._id &&
                 !user.following?.some((f) => f._id === result._id) && (
-                  <button onClick={() => handleFollow(result._id)}>
+                  <button onClick={() => handleFollow(result._id)} className="buttonText marginLeft10">
                     Follow
                   </button>
                 )}
+              <strong>{result.username}</strong> ({result.name})
             </div>
           ))}
         </div>
@@ -172,7 +172,7 @@ function Job() {
         </div>
         <div className="row paddingTop10">
             <div className="col-4 border10 margin20 secondary text-center">
-                <div className="heading">Recommended Jobs</div>
+                <h3 className="heading">Recommended Jobs</h3>
                 <div className="notif">
                     <div className="circle1"></div>
                     Job 1
@@ -191,9 +191,9 @@ function Job() {
                 </div>
             </div>
             <div className="col border10 margin20 secondary text-center">
-                <div className="heading">
+                <h3 className="heading">
                     Job Title
-                </div>
+                </h3>
                 <div className="container qualifications">
                     <div className="row align-items-start">
                         <div className="col">

@@ -9,6 +9,7 @@ import Notification from './components/notification';
 import Job from './components/job';
 import Profile from './components/profile';
 import Group from './components/group';
+import Post from './components/post';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/job" element={<Job />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/network/group" element={<Group />} />
+        <Route path="/profile/post" element={<Post />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

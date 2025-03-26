@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { Router } from "react-router"
 import { useNavigate } from "react-router-dom";
+import '../design/main.css';
+import '../design/colors.css';
+import '../design/shapes.css';
+import '../design/alignment.css';
+import '../design/text.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -82,9 +88,10 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>{isLogin ? "Login" : "Create Account"}</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="primary">
+      <h2 className="center paddingTop20">{isLogin ? "Login" : "Create Account"}</h2>
+      
+      <form onSubmit={handleSubmit} className="margin20">
         {!isLogin && (
           <>
             <input
@@ -92,12 +99,14 @@ function Login() {
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="margin10 form-control"
             />
             <input
               type="text"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              className="margin10 form-control"
             />
           </>
         )}
@@ -107,22 +116,24 @@ function Login() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="margin10 form-control"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="margin10 form-control"
         />
 
-        <button type="submit">
+        <button type="submit" className="marginLeft10">
           {isLogin ? "Login" : "Create Account"}
         </button>
       </form>
 
       <hr />
 
-      <button onClick={handleToggleMode}>
+      <button onClick={handleToggleMode} className="marginLeft30">
         {isLogin
           ? "Don't have an account? Create one"
           : "Already have an account? Login"}
@@ -130,8 +141,8 @@ function Login() {
 
       <hr />
 
-      <h2>All Registered Users (Testing Only)</h2>
-      <ul>
+      <h2 className="secondary margin20 padding10">All Registered Users (Testing Only)</h2>
+      <ul className="secondary margin20">
         {users.map((user) => (
           <li key={user._id}>
             <strong>Name:</strong> {user.name} &nbsp;|&nbsp;

@@ -13,7 +13,7 @@
 .navbarContent {
     margin-left: 10px;
     margin-right: 10px;
-    align-items: center;
+    /* align-items: center; */
 }
 .navbarConentLink {
     text-decoration: none;
@@ -73,7 +73,7 @@
     margin: 10px;
 } */
 .notif {
-    height: 70px;
+    /* height: 70px; */
     /* background-color: lightgrey; */
     font-size: 15px;
     align-items: center;
@@ -98,3 +98,7 @@
     text-align: center;
     margin: 10px;
 }
+/* div {
+    width: 100%;
+    height: auto;
+} */

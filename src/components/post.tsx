@@ -6,10 +6,10 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-import { Bar } from './script';
+// import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Profile() {
+function Post() {
   const [user, setUser] = useState(null);
   const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
@@ -43,6 +43,32 @@ function Profile() {
     } catch (err) {
       console.error("Error fetching user:", err);
       navigate("/login");
+    }
+  };
+
+  const handleCreatePost = async (e) => {
+    e.preventDefault();
+    if (!user) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/users/${user._id}/posts`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: postText }),
+        }
+      );
+      const updatedUser = await response.json();
+
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+
+      setPostText("");
+      alert("Post created successfully!");
+    } catch (err) {
+      console.error("Error creating post:", err);
+      alert("Failed to create post");
     }
   };
 
@@ -100,31 +126,11 @@ function Profile() {
       console.error("Error fetching feed:", err);
     }
   };
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
-    if (!user) return;
 
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${user._id}/posts`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: postText }),
-        }
-      );
-      const updatedUser = await response.json();
+  // const navigationBar = async (e) => {
+  //   return Bar()
+  // }
 
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-
-      setPostText("");
-      alert("Post created successfully!");
-    } catch (err) {
-      console.error("Error creating post:", err);
-      alert("Failed to create post");
-    }
-};
   const gotoHome = async (e) => {
     navigate("/homepage");
   }
@@ -140,9 +146,6 @@ function Profile() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
-  const createPost = async (e) => {
-    navigate("/profile/post")
-  }
 
   useEffect(() => {
     if (user) {
@@ -155,7 +158,7 @@ function Profile() {
   }
 
   return (
-    <div className="container-fluid  p-0 primary">
+    <div className="primary">
         <form onSubmit={handleSearch} className="padding10 rightAlign">
           <input
             type="text"
@@ -178,9 +181,8 @@ function Profile() {
             </div>
           ))}
         </div>
-        <div id="navbar"></div>
-        <div className="row navbar">
-        <div className="col d-flex rightAlign">
+      <div className="row">
+        <div className="col d-flex marginBottom10 rightAlign">
             <div className="navbarContent text bodyText">
                 <a onClick={gotoHome} className="navbarConentLink text">Home</a>
             </div>
@@ -197,46 +199,30 @@ function Profile() {
                 <a onClick={gotoProfile} className="navbarConentLink text">My Profile</a>
             </div>
         </div>
-        </div>
-        <div className="row paddingTop20">
-            <div className="col border10 margin20 secondary">
-                <div className="headPhoto">Head Photo</div>
-                <div className="circle text-center">Profile photo</div>
-                <div className="name">{user.name}</div>
-
-                <div className="row center marginTop10 marginBottom10">
-                    <div className="col d-flex center grey">
-                        <div className="bodyText marginLeft10 marginRight10 text">Posts</div>
-                        <div className="bodyText marginLeft10 marginRight10 text">About Me</div>
-                        <div className="bodyText marginLeft10 marginRight10 text">Media</div>
+      </div>       
+        <form onSubmit={handleCreatePost}>
+            <div className="row paddingTop20">
+                <div className="col border10 margin20">
+                    <div className="headPhoto">Insert Photo(s)/Video(s)</div>
+                    <div className="margin10">
+                        <input 
+                        type="text" 
+                        className="form-control bodyText text" 
+                        id="caption" 
+                        name="caption" 
+                        placeholder="Caption"
+                        value={postText}
+                        onChange={(e) => setPostText(e.target.value)}/>
                     </div>
-                </div>
-                <div className="row center marginTop10 marginBottom10">
-                    <div className="col d-flex center">
-                    <button onClick={createPost} type="submit" className="buttonText">Create Post</button>
+                    <div className="margin10">
+                        <input type="text" className="form-control" id="tag" name="tag" placeholder="Tag @"/>
                     </div>
+                    <button type="submit" className="btn btn-primary center buttonText">Submit</button>
                 </div>
-
-                <div className="heading center">
-                    <div className="feed marginBottom10 center marginTop10">
-                        <div className="row">
-                        <h2 className="heading text">Your Posts</h2>
-                        <ul>
-                            {user.posts?.map((p, index) => (
-                            <li key={index}>
-                                {p.text} (Created: {new Date(p.createdAt).toLocaleString()})
-                            </li>
-                            ))}
-                        </ul>
-                        </div>
-                    </div>
                 </div>
-            </div>
-            </div>
-
-        <div id="footer"></div>
-    </div> 
+        </form>
+    </div>
   );
 }
 
-export default Profile;
+export default Post;
