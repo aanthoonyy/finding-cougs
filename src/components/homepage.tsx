@@ -225,28 +225,30 @@ function Homepage() {
               <button onClick={createPost} type="submit" className="buttonText">Create Post</button>
               <div className="marginBottom10 center marginTop10">
                 <div className="row">
-                <h3 className="heading text">Your Posts</h3>
+                <h3 className="heading text center">Your Posts</h3>
                   <ul>
                     {user.posts?.map((p, index) => (
-                      <li key={index}>
-                        {p.text} (Created: {new Date(p.createdAt).toLocaleString()})
-                      </li>
+                      <ul key={index} className="grey margin10 padding10 border border-danger">
+                        <ul className="post center">{p.text}</ul> 
+                        <ul className="postFooter">(Created by: {user.name} | Created: {new Date(p.createdAt).toLocaleString()})</ul>
+                      </ul>
                     ))}
                   </ul>
                   </div>
               </div>
-              <h3 className="heading">Feed</h3>
+              <h3 className="heading center">Feed</h3>
                     {Array.isArray(feed) &&
                       feed.map((u) => (
                         <div key={u._id}>
-                          <h3 className="bodyText">
+                          {/* <h3 className="bodyText">
                             {u.name} (@{u.username})
-                          </h3>
+                          </h3> */}
                           <ul className="bodyText">
                             {u.posts?.map((post: any, idx: any) => (
-                              <li key={idx}>
-                                {post.text} - {new Date(post.createdAt).toLocaleString()}
-                              </li>
+                              <ul key={idx} className="grey margin10 padding10 border border-danger">
+                                <ul className="post">{post.text}</ul>
+                                <ul className="postFooter">(Created by: {u.name} | Created: {new Date(post.createdAt).toLocaleString()})</ul>
+                              </ul>
                             ))}
                           </ul>
                         </div>

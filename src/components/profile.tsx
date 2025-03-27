@@ -220,13 +220,14 @@ function Profile() {
                 <div className="heading center">
                     <div className="feed marginBottom10 center marginTop10">
                         <div className="row">
-                        <h2 className="heading text">Your Posts</h2>
+                        <h3 className="heading text">Your Posts</h3>
                         <ul>
-                            {user.posts?.map((p, index) => (
-                            <li key={index}>
-                                {p.text} (Created: {new Date(p.createdAt).toLocaleString()})
-                            </li>
-                            ))}
+                          {user.posts?.map((p, index) => (
+                            <ul key={index} className="grey margin10 padding10 border border-danger">
+                              <ul className="post center">{p.text}</ul> 
+                              <ul className="postFooter">(Created by: {user.name} | Created: {new Date(p.createdAt).toLocaleString()})</ul>
+                            </ul>
+                          ))}
                         </ul>
                         </div>
                     </div>

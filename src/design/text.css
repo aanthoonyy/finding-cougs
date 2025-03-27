@@ -9,11 +9,19 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 .heading {
-    font-size: 25x;
+    font-size: 30x;
     font-weight: 600px;
     margin-top: 10px;
 }
 .buttonText {
+    font-size: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.post {
+    font-size: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.postFooter {
     font-size: 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

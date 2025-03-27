@@ -214,24 +214,24 @@ function Group() {
                     </div>
                 </div>
 
-                    <div className="heading">
-                        Feed
-                        <div className="feed marginFeedGroup">
-                            <div className="row center marginTop10 marginBottom10 grey">
-                                <div className="text-center">post</div>
-                                <div className="col d-flex justify-content-center">
-                                    <div className="postInteraction">Like</div>
-                                    <div className="postInteraction">Comment</div>
-                                    <div className="postInteraction">Share</div>
-                                </div>
-                            </div>
+                <h3 className="heading center">Feed</h3>
+                    {Array.isArray(feed) &&
+                      feed.map((u) => (
+                        <div key={u._id}>
+                          {/* <h3 className="bodyText">
+                            {u.name} (@{u.username})
+                          </h3> */}
+                          <ul className="bodyText">
+                            {u.posts?.map((post: any, idx: any) => (
+                              <ul key={idx} className="grey margin10 padding10 border border-danger">
+                                <ul className="post">{post.text}</ul>
+                                <ul className="postFooter">(Created by: {u.name} | Created: {new Date(post.createdAt).toLocaleString()})</ul>
+                              </ul>
+                            ))}
+                          </ul>
                         </div>
-                    </div>
-                    <div className="container text-center">
-                        
-                    </div>
+                      ))}
                 </div>
-                <div className="col-2"></div>
               </div>
     </div> 
   );
