@@ -5,6 +5,8 @@ const express = require('express');
 const cors = require('cors');
 
 const userRoutes = require('./routes/userRoutes.js');
+const communityRoutes = require('./routes/communityRoutes');
+const jobRoutes = require('./routes/jobRoutes');
 const config = require('./config.json');
 
 mongoose
@@ -32,6 +34,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/', userRoutes);
+app.use('/', communityRoutes);
+app.use('/', jobRoutes);
 
 app.listen(5000, () => {
   console.log('Server running on port 5000');
