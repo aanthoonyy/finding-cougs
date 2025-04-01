@@ -80,5 +80,16 @@ router.get('/jobs', async (req, res) => {
     }
   });
   
+  // DELETE /jobs/:jobId - delete a job
+router.delete('/jobs/:jobId', async (req, res) => {
+    try {
+      const { jobId } = req.params;
+      await Job.findByIdAndDelete(jobId);
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Error deleting job:", err);
+      res.status(500).send("Something Went Wrong");
+    }
+  });
 
 module.exports = router;

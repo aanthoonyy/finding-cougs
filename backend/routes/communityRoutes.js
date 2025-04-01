@@ -26,6 +26,18 @@ router.post('/communities', async (req, res) => {
   }
 });
 
+// DELETE /communities/:communityId - delete a community
+router.delete('/communities/:communityId', async (req, res) => {
+    try {
+      const { communityId } = req.params;
+      await Community.findByIdAndDelete(communityId);
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Error deleting community:", err);
+      res.status(500).send("Something Went Wrong");
+    }
+  });
+
 // POST /communities/:communityId/join - join a community
 router.post('/communities/:communityId/join', async (req, res) => {
   try {

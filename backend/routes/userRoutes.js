@@ -175,4 +175,15 @@ router.get('/users/:id', async (req, res) => {
   }
 });
 
+// In routes/userRoutes.js
+router.delete('/users/:userId', async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.userId);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error deleting user:', err);
+    res.status(500).json({ success: false, error: 'Something went wrong' });
+  }
+});
+
 module.exports = router;
