@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 function JobPage() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
+  const [jobTypeFilter, setJobTypeFilter] = useState("all");
   const navigate = useNavigate();
 
-  // Load logged-in user from localStorage and fetch jobs on mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (!storedUser) {
@@ -17,10 +17,13 @@ function JobPage() {
     fetchJobs();
   }, [navigate]);
 
-  // Fetch all available jobs
   const fetchJobs = async () => {
     try {
-      const response = await fetch("http://localhost:5000/jobs");
+      let url = "http://localhost:5000/jobs";
+      if (jobTypeFilter !== "all") {
+        url += `?type=${encodeURIComponent(jobTypeFilter)}`;
+      }
+      const response = await fetch(url);
       const data = await response.json();
       setJobs(data);
     } catch (err) {
@@ -28,7 +31,14 @@ function JobPage() {
     }
   };
 
-  // Handle applying for a job
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setJobTypeFilter(e.target.value);
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, [jobTypeFilter]);
+
   const handleApply = async (jobId: string) => {
     if (!user) return;
     try {
@@ -43,7 +53,7 @@ function JobPage() {
       const data = await response.json();
       if (data.success) {
         alert("Applied successfully!");
-        fetchJobs(); // Refresh the jobs list
+        fetchJobs();
       } else {
         alert(data.error || "Failed to apply for job");
       }
@@ -56,13 +66,29 @@ function JobPage() {
   return (
     <div>
       <h1>Job Listings</h1>
+      
+      <div>
+        <label htmlFor="jobFilter">Filter by Type: </label>
+        <select
+          id="jobFilter"
+          value={jobTypeFilter}
+          onChange={handleFilterChange}
+        >
+          <option value="all">All</option>
+          <option value="internship">Internship</option>
+          <option value="part-time">Part-Time</option>
+          <option value="full-time">Full-Time</option>
+        </select>
+      </div>
+
       {jobs.length === 0 ? (
         <p>No jobs available at this time.</p>
       ) : (
         <ul>
           {jobs.map((job) => {
             const hasApplied = job.applicants.some(
-              (applicant: any) => applicant.toString() === user._id.toString()
+              (applicant: any) =>
+                applicant.toString() === user._id.toString()
             );
             return (
               <li key={job._id}>
@@ -70,11 +96,14 @@ function JobPage() {
                   {job.title} at {job.company}
                 </h3>
                 <p>{job.description}</p>
+                <p>Type: {job.type}</p>
                 <p>Applicants: {job.applicants.length}</p>
                 {hasApplied ? (
                   <button disabled>Applied</button>
                 ) : (
-                  <button onClick={() => handleApply(job._id)}>Apply</button>
+                  <button onClick={() => handleApply(job._id)}>
+                    Apply
+                  </button>
                 )}
               </li>
             );

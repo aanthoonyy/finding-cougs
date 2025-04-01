@@ -13,18 +13,18 @@ router.get('/jobs', async (req, res) => {
   }
 });
 
-// POST /jobs - create a new job (optional, for job posting)
+// POST /jobs - create a new job
 router.post('/jobs', async (req, res) => {
-  try {
-    const { title, description, company } = req.body;
-    const job = new Job({ title, description, company });
-    await job.save();
-    res.json(job);
-  } catch (err) {
-    console.error('Error creating job:', err);
-    res.status(500).send('Something Went Wrong');
-  }
-});
+    try {
+      const { title, description, company, type } = req.body;
+      const job = new Job({ title, description, company, type });
+      await job.save();
+      res.json(job);
+    } catch (err) {
+      console.error('Error creating job:', err);
+      res.status(500).send('Something Went Wrong');
+    }
+  });
 
 // POST /jobs/:jobId/apply - apply for a job
 router.post('/jobs/:jobId/apply', async (req, res) => {
@@ -52,5 +52,33 @@ router.post('/jobs/:jobId/apply', async (req, res) => {
     res.status(500).send('Something Went Wrong');
   }
 });
+
+// GET /jobs - list all jobs, optionally filtering by type
+router.get('/jobs', async (req, res) => {
+    try {
+      const jobType = req.query.type;
+      let filter = {};
+      if (jobType && jobType !== 'all') {
+        filter.type = jobType;
+      }
+      const jobs = await Job.find(filter);
+      res.json(jobs);
+    } catch (err) {
+      console.error('Error fetching jobs:', err);
+      res.status(500).send('Something Went Wrong');
+    }
+  });
+
+// GET /jobs - list all jobs with applicants populated
+router.get('/jobs', async (req, res) => {
+    try {
+      const jobs = await Job.find({}).populate('applicants', 'name username email');
+      res.json(jobs);
+    } catch (err) {
+      console.error('Error fetching jobs:', err);
+      res.status(500).send('Something Went Wrong');
+    }
+  });
+  
 
 module.exports = router;
