@@ -156,10 +156,36 @@ function Network() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
-  const grabGroup = async (e) => {
-    //replace with getting group id and displaying it
-    navigate("/network/group")
-  }
+  // const grabGroup = async (e) => {
+  //   //replace with getting group id and displaying it
+  //   navigate("/network/group:communityId")
+  // }
+
+  //NEED TO FIX
+  const grabGroup = async (communityId: string) => {
+    if (!user) return;
+    try {
+      const response = await fetch(
+        `http://localhost:5000/network/group/${communityId}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id }),
+        }
+      );
+      const data = await response.json();
+      // setCommunities(data);
+      if (data.success) {
+        navigate("/network/group", { state: { name:data.name } })
+      } else {
+        alert(data.error || "Failed to find community");
+      }
+    } catch (err) {
+      console.error("Error finding community:", err);
+      alert("Failed to find community");
+    }
+  };
+
   useEffect(() => {
     if (user) {
       fetchFeed();
@@ -228,7 +254,7 @@ function Network() {
                         <p key={community._id}>
                           <hr></hr>
                           <h3 className="name text">
-                            <a onClick={grabGroup} className="groupLink text">
+                            <a onClick={() => grabGroup(community._id)} className="groupLink text">
                               {community.name}
                             </a></h3>
                           <div>Members: {community.members.length}</div>

@@ -203,7 +203,7 @@ function Post() {
         <form onSubmit={handleCreatePost}>
             <div className="row paddingTop20">
                 <div className="col border10 margin20">
-                    <div className="headPhoto">Insert Photo(s)/Video(s)</div>
+                    {/* <div className="headPhoto">Insert Photo(s)/Video(s)</div> */}
                     <div className="margin10">
                         <input 
                         type="text" 

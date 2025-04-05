@@ -208,17 +208,24 @@ function Homepage() {
       {/* < Bar.navbar /> */}
         <div className="row paddingTop20">
           <div className="col border10 margin20 secondary">
-            <div className="circle text-center">
+            {/* <div className="circle text-center">
               <div>profile picture</div>
-            </div>
-            <div className="name">{user.name || user.email}</div>
+            </div> */}
+            <div className="marginTop10 name">{user.name || user.email}</div>
 
             <div className="bodyText marginLeft10 marginTop20">
-              Personal Information
+              Username: {user.username}
             </div>
             <div className="bodyText marginLeft10 marginTop20">
               Email: {user.email}
             </div>
+            <div className="bodyText marginLeft10 marginTop20">
+              Following: {user.following.length}
+            </div>
+            <div className="bodyText marginLeft10 marginTop20">
+            Followers: {user.followers.length}
+            </div>
+             
           </div>
           <div className="col margin20 secondary center">
             <div className="heading">

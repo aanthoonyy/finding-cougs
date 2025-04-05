@@ -93,7 +93,7 @@ router.post('/network/:communityId/leave', async (req, res) => {
     }
   });
 
-router.post('/network/group/:communityId', async (req, res) => {
+router.get('/network/group/:communityId', async (req, res) => {
  try {
   const { communityId } = req.params;
   const { userId } = req.body;
@@ -113,8 +113,8 @@ router.post('/network/group/:communityId', async (req, res) => {
   // }
 
 
-  //res.json({ success: true, community });
-  res.render('../models/group', {community: community})
+  res.json({ success: true, community });
+  // res.render('../../src/components/group', {community: community})
 } catch (err) {
   console.error('Error going to community:', err);
   res.status(500).send('Something Went Wrong');

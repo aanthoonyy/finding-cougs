@@ -200,9 +200,10 @@ function Profile() {
         </div>
         <div className="row paddingTop20">
             <div className="col border10 margin20 secondary">
-                <div className="headPhoto">Head Photo</div>
-                <div className="circle text-center">Profile photo</div>
-                <div className="name">{user.name}</div>
+                {/* <div className="headPhoto">Head Photo</div> */}
+                {/* <div className="circle text-center">Profile photo</div> */}
+                <div className="name center margin20">{user.name}</div>
+                <div className="bodyText center margin20">Following: {user.following.length} | Followers: {user.followers.length}</div>
 
                 <div className="row center marginTop10 marginBottom10">
                     <div className="col d-flex center grey">
