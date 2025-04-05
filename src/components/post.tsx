@@ -9,7 +9,7 @@ import '../design/text.css';
 // import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Homepage() {
+function Post() {
   const [user, setUser] = useState(null);
   const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
@@ -146,9 +146,6 @@ function Homepage() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
-  const createPost = async (e) => {
-    navigate("/profile/post")
-  }
 
   useEffect(() => {
     if (user) {
@@ -171,7 +168,7 @@ function Homepage() {
             className="margin10 bodyText"/>
           <button type="submit" className="buttonText">Search</button>
         </form>
-       <div className="leftAlign">
+        <div className="leftAlign">
           {searchResults.map((result) => (
             <div key={result._id} className="bodyText secondary margin10 padding10">
               {result._id !== user._id &&
@@ -185,7 +182,7 @@ function Homepage() {
           ))}
         </div>
       <div className="row">
-        <div className="col d-flex rightAlign">
+        <div className="col d-flex marginBottom10 rightAlign">
             <div className="navbarContent text bodyText">
                 <a onClick={gotoHome} className="navbarConentLink text">Home</a>
             </div>
@@ -202,62 +199,30 @@ function Homepage() {
                 <a onClick={gotoProfile} className="navbarConentLink text">My Profile</a>
             </div>
         </div>
-      </div>
-      {/* {navigationBar} */}
-      {/* <h1>{{ navbar }}</h1> */}
-      {/* < Bar.navbar /> */}
-        <div className="row paddingTop20">
-          <div className="col border10 margin20 secondary">
-            <div className="circle text-center">
-              <div>profile picture</div>
-            </div>
-            <div className="name">{user.name || user.email}</div>
-
-            <div className="bodyText marginLeft10 marginTop20">
-              Personal Information
-            </div>
-            <div className="bodyText marginLeft10 marginTop20">
-              Email: {user.email}
-            </div>
-          </div>
-          <div className="col margin20 secondary center">
-            <div className="heading">
-              <button onClick={createPost} type="submit" className="buttonText">Create Post</button>
-              <div className="marginBottom10 center marginTop10">
-                <div className="row">
-                <h3 className="heading text center">Your Posts</h3>
-                  <ul>
-                    {user.posts?.map((p, index) => (
-                      <ul key={index} className="grey margin10 padding10 border border-danger">
-                        <ul className="post center">{p.text}</ul> 
-                        <ul className="postFooter">(Created by: {user.name} | Created: {new Date(p.createdAt).toLocaleString()})</ul>
-                      </ul>
-                    ))}
-                  </ul>
-                  </div>
-              </div>
-              <h3 className="heading center">Feed</h3>
-                    {Array.isArray(feed) &&
-                      feed.map((u) => (
-                        <div key={u._id}>
-                          {/* <h3 className="bodyText">
-                            {u.name} (@{u.username})
-                          </h3> */}
-                          <ul className="bodyText">
-                            {u.posts?.map((post: any, idx: any) => (
-                              <ul key={idx} className="grey margin10 padding10 border border-danger">
-                                <ul className="post">{post.text}</ul>
-                                <ul className="postFooter">(Created by: {u.name} | Created: {new Date(post.createdAt).toLocaleString()})</ul>
-                              </ul>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-            </div>
-          </div>
-        </div>
+      </div>       
+        <form onSubmit={handleCreatePost}>
+            <div className="row paddingTop20">
+                <div className="col border10 margin20">
+                    <div className="headPhoto">Insert Photo(s)/Video(s)</div>
+                    <div className="margin10">
+                        <input 
+                        type="text" 
+                        className="form-control bodyText text" 
+                        id="caption" 
+                        name="caption" 
+                        placeholder="Caption"
+                        value={postText}
+                        onChange={(e) => setPostText(e.target.value)}/>
+                    </div>
+                    <div className="margin10">
+                        <input type="text" className="form-control" id="tag" name="tag" placeholder="Tag @"/>
+                    </div>
+                    <button type="submit" className="btn btn-primary center buttonText">Submit</button>
+                </div>
+                </div>
+        </form>
     </div>
   );
 }
 
-export default Homepage;
+export default Post;

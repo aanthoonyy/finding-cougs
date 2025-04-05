@@ -6,10 +6,10 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-// import { Bar } from './script';
+import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Homepage() {
+function Group() {
   const [user, setUser] = useState(null);
   const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
@@ -43,32 +43,6 @@ function Homepage() {
     } catch (err) {
       console.error("Error fetching user:", err);
       navigate("/login");
-    }
-  };
-
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
-    if (!user) return;
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${user._id}/posts`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: postText }),
-        }
-      );
-      const updatedUser = await response.json();
-
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-
-      setPostText("");
-      alert("Post created successfully!");
-    } catch (err) {
-      console.error("Error creating post:", err);
-      alert("Failed to create post");
     }
   };
 
@@ -126,11 +100,31 @@ function Homepage() {
       console.error("Error fetching feed:", err);
     }
   };
+  const handleCreatePost = async (e) => {
+    e.preventDefault();
+    if (!user) return;
 
-  // const navigationBar = async (e) => {
-  //   return Bar()
-  // }
+    try {
+      const response = await fetch(
+        `http://localhost:5000/users/${user._id}/posts`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: postText }),
+        }
+      );
+      const updatedUser = await response.json();
 
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+
+      setPostText("");
+      alert("Post created successfully!");
+    } catch (err) {
+      console.error("Error creating post:", err);
+      alert("Failed to create post");
+    }
+};
   const gotoHome = async (e) => {
     navigate("/homepage");
   }
@@ -149,7 +143,6 @@ function Homepage() {
   const createPost = async (e) => {
     navigate("/profile/post")
   }
-
   useEffect(() => {
     if (user) {
       fetchFeed();
@@ -171,7 +164,7 @@ function Homepage() {
             className="margin10 bodyText"/>
           <button type="submit" className="buttonText">Search</button>
         </form>
-       <div className="leftAlign">
+        <div className="leftAlign">
           {searchResults.map((result) => (
             <div key={result._id} className="bodyText secondary margin10 padding10">
               {result._id !== user._id &&
@@ -184,7 +177,7 @@ function Homepage() {
             </div>
           ))}
         </div>
-      <div className="row">
+        <div className="row navbar">
         <div className="col d-flex rightAlign">
             <div className="navbarContent text bodyText">
                 <a onClick={gotoHome} className="navbarConentLink text">Home</a>
@@ -202,41 +195,26 @@ function Homepage() {
                 <a onClick={gotoProfile} className="navbarConentLink text">My Profile</a>
             </div>
         </div>
-      </div>
-      {/* {navigationBar} */}
-      {/* <h1>{{ navbar }}</h1> */}
-      {/* < Bar.navbar /> */}
-        <div className="row paddingTop20">
-          <div className="col border10 margin20 secondary">
-            <div className="circle text-center">
-              <div>profile picture</div>
-            </div>
-            <div className="name">{user.name || user.email}</div>
+        </div>
+        <div className="row paddingTop20 center">
+                <div className="col border10 margin20 secondary text-center">
+                    <div className="headPhoto">Head Photo</div>
+                    <div className="name">Group Name</div>
 
-            <div className="bodyText marginLeft10 marginTop20">
-              Personal Information
-            </div>
-            <div className="bodyText marginLeft10 marginTop20">
-              Email: {user.email}
-            </div>
-          </div>
-          <div className="col margin20 secondary center">
-            <div className="heading">
-              <button onClick={createPost} type="submit" className="buttonText">Create Post</button>
-              <div className="marginBottom10 center marginTop10">
-                <div className="row">
-                <h3 className="heading text center">Your Posts</h3>
-                  <ul>
-                    {user.posts?.map((p, index) => (
-                      <ul key={index} className="grey margin10 padding10 border border-danger">
-                        <ul className="post center">{p.text}</ul> 
-                        <ul className="postFooter">(Created by: {user.name} | Created: {new Date(p.createdAt).toLocaleString()})</ul>
-                      </ul>
-                    ))}
-                  </ul>
-                  </div>
-              </div>
-              <h3 className="heading center">Feed</h3>
+                    <div className="row center marginTop10 marginBottom10 grey">
+                        <div className="col d-flex center">
+                            <div className="bodyText marginLeft10 marginRight10 center">Posts</div>
+                            <div className="bodyText marginLeft10 marginRight10 center">People</div>
+                            <div className="bodyText marginLeft10 marginRight10 center">Media</div>
+                        </div>
+                    </div>
+                    <div className="row center marginTop10 marginBottom10">
+                    <div className="col d-flex center">
+                    <button onClick={createPost} type="submit" className="buttonText">Create Post</button>
+                    </div>
+                </div>
+
+                <h3 className="heading center">Feed</h3>
                     {Array.isArray(feed) &&
                       feed.map((u) => (
                         <div key={u._id}>
@@ -253,11 +231,10 @@ function Homepage() {
                           </ul>
                         </div>
                       ))}
-            </div>
-          </div>
-        </div>
-    </div>
+                </div>
+              </div>
+    </div> 
   );
 }
 
-export default Homepage;
+export default Group;
