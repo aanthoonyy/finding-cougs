@@ -3,7 +3,7 @@ const router = express.Router();
 const Community = require('../models/community');
 
 // GET /communities - list all communities
-router.get('/communities', async (req, res) => {
+router.get('/network', async (req, res) => {
   try {
     const communities = await Community.find({});
     res.json(communities);
@@ -14,7 +14,7 @@ router.get('/communities', async (req, res) => {
 });
 
 // POST /communities - create a new community
-router.post('/communities', async (req, res) => {
+router.post('/network', async (req, res) => {
   try {
     const { name, description } = req.body;
     const community = new Community({ name, description });
@@ -27,7 +27,7 @@ router.post('/communities', async (req, res) => {
 });
 
 // DELETE /communities/:communityId - delete a community
-router.delete('/communities/:communityId', async (req, res) => {
+router.delete('/network/:communityId', async (req, res) => {
     try {
       const { communityId } = req.params;
       await Community.findByIdAndDelete(communityId);
@@ -39,7 +39,7 @@ router.delete('/communities/:communityId', async (req, res) => {
   });
 
 // POST /communities/:communityId/join - join a community
-router.post('/communities/:communityId/join', async (req, res) => {
+router.post('/network/:communityId/join', async (req, res) => {
   try {
     const { communityId } = req.params;
     const { userId } = req.body;
@@ -66,7 +66,7 @@ router.post('/communities/:communityId/join', async (req, res) => {
 });
 
 // Leave a community: POST /communities/:communityId/leave
-router.post('/communities/:communityId/leave', async (req, res) => {
+router.post('/network/:communityId/leave', async (req, res) => {
     try {
       const { communityId } = req.params;
       const { userId } = req.body;
@@ -92,6 +92,34 @@ router.post('/communities/:communityId/leave', async (req, res) => {
       res.status(500).send('Something Went Wrong');
     }
   });
+
+router.post('/network/group/:communityId', async (req, res) => {
+ try {
+  const { communityId } = req.params;
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'UserId is required' });
+  }
+
+  const community = await Community.findById(communityId);
+  if (!community) {
+    return res.status(404).json({ error: 'Community not found' });
+  }
+
+  // if (!community.members.includes(userId)) {
+  //   community.members.push(userId);
+  //   await community.save();
+  // }
+
+
+  //res.json({ success: true, community });
+  res.render('../models/group', {community: community})
+} catch (err) {
+  console.error('Error going to community:', err);
+  res.status(500).send('Something Went Wrong');
+}
+})
   
 
 module.exports = router;

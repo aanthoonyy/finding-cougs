@@ -110,7 +110,7 @@ function Notification() {
     navigate("/notification")
   }
   const gotoJob = async (e) => {
-    navigate("/job")
+    navigate("/jobs")
   }
   const gotoProfile = async (e) => {
     navigate("/profile")

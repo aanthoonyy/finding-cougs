@@ -82,7 +82,7 @@ function JobPage() {
       </div>
 
       {jobs.length === 0 ? (
-        <p>No jobs available at this time.</p>
+        <p className="notif">No jobs available at this time.</p>
       ) : (
         <ul>
           {jobs.map((job) => {
@@ -95,8 +95,8 @@ function JobPage() {
                 <h3>
                   {job.title} at {job.company}
                 </h3>
-                <p>{job.description}</p>
-                <p>Type: {job.type}</p>
+                <p className="jobDescription">{job.description}</p>
+                <p className="qualifications">Type: {job.type}</p>
                 <p>Applicants: {job.applicants.length}</p>
                 {hasApplied ? (
                   <button disabled>Applied</button>

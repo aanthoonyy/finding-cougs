@@ -82,22 +82,21 @@
     margin-top: 10px; 
     margin-bottom: 10px; 
 }
-
 .groupLink {
     text-decoration: none;
     color: black;
 }
 .jobDescription {
     font-size: 15px;
-    font-weight: 400px;
+    font-weight: 500px;
     margin-top: 10px;
     text-align: center;
 }
-.qualifications {
+/* .qualifications {
     font-size: 10px;
     text-align: center;
     margin: 10px;
-}
+} */
 /* div {
     width: 100%;
     height: auto;

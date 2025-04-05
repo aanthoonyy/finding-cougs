@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../design/main.css';
 import '../design/colors.css';
@@ -10,11 +10,11 @@ import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Job() {
-  const [user, setUser] = useState(null);
-  const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [feed, setFeed] = useState([]);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [user, setUser] = useState<any>(null);
+  const [jobTypeFilter, setJobTypeFilter] = useState("all");
 
   const navigate = useNavigate();
 
@@ -24,29 +24,58 @@ function Job() {
       navigate("/login");
       return;
     }
-
     const parsedUser = JSON.parse(storedUser);
-    fetchFullUser(parsedUser._id);
+    setUser(parsedUser);
+    fetchJobs();
   }, [navigate]);
 
-  const fetchFullUser = async (userId: any) => {
+  const fetchJobs = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`);
-      const data = await response.json();
-      if (data.error) {
-        alert(data.error);
-        navigate("/login");
-      } else {
-        localStorage.setItem("user", JSON.stringify(data));
-        setUser(data);
+      let url = "http://localhost:5000/jobs";
+      if (jobTypeFilter !== "all") {
+        url += `?type=${encodeURIComponent(jobTypeFilter)}`;
       }
+      const response = await fetch(url);
+      const data = await response.json();
+      setJobs(data);
     } catch (err) {
-      console.error("Error fetching user:", err);
-      navigate("/login");
+      console.error("Error fetching jobs:", err);
     }
   };
+  
 
-  const handleSearch = async (e) => {
+ const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+     setJobTypeFilter(e.target.value);
+   };
+ 
+   useEffect(() => {
+     fetchJobs();
+   }, [jobTypeFilter]);
+ 
+   const handleApply = async (jobId: string) => {
+     if (!user) return;
+     try {
+       const response = await fetch(
+         `http://localhost:5000/jobs/${jobId}/apply`,
+         {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ userId: user._id }),
+         }
+       );
+       const data = await response.json();
+       if (data.success) {
+         alert("Applied successfully!");
+         fetchJobs();
+       } else {
+         alert(data.error || "Failed to apply for job");
+       }
+     } catch (err) {
+       console.error("Error applying for job:", err);
+       alert("Failed to apply for job");
+     }
+   };
+   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query) return;
 
@@ -61,7 +90,6 @@ function Job() {
       alert("Failed to search users");
     }
   };
-
   const handleFollow = async (targetId) => {
     if (!user) return;
 
@@ -87,19 +115,6 @@ function Job() {
     }
   };
 
-  const fetchFeed = async () => {
-    if (!user) return;
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${user._id}/feed`
-      );
-      const data = await response.json();
-      setFeed(data);
-    } catch (err) {
-      console.error("Error fetching feed:", err);
-    }
-  };
   const gotoHome = async (e) => {
     navigate("/homepage");
   }
@@ -110,7 +125,7 @@ function Job() {
     navigate("/notification")
   }
   const gotoJob = async (e) => {
-    navigate("/job")
+    navigate("/jobs")
   }
   const gotoProfile = async (e) => {
     navigate("/profile")
@@ -118,7 +133,7 @@ function Job() {
 
   useEffect(() => {
     if (user) {
-      fetchFeed();
+      fetchJobs();
     }
   }, [user]);
 
@@ -127,7 +142,7 @@ function Job() {
   }
 
   return (
-    <div className="container-fluid  p-0 primary">
+    <div className="primary">
         <form onSubmit={handleSearch} className="padding10 rightAlign">
           <input
             type="text"
@@ -170,10 +185,59 @@ function Job() {
             </div>
         </div>
         </div>
-        <div className="row paddingTop10">
-            <div className="col-4 border10 margin20 secondary text-center">
+            <div className="border10 margin20 secondary text-center">
                 <h3 className="heading">Recommended Jobs</h3>
-                <div className="notif">
+                <div>
+                  <label htmlFor="jobFilter">Filter by Type: </label>
+                  <select
+                    id="jobFilter"
+                    value={jobTypeFilter}
+                    onChange={handleFilterChange}
+                    className="margin10"
+                  >
+                    <option value="all">All</option>
+                    <option value="internship">Internship</option>
+                    <option value="part-time">Part-Time</option>
+                    <option value="full-time">Full-Time</option>
+                  </select>
+                </div>
+                {jobs.length === 0 ? (
+                  <h3 className="name text">No jobs available at this time.</h3>
+                ) : (
+                  <ul className="margin20">
+                    {jobs.map((job) => {
+                      const hasApplied = job.applicants.some(
+                        (applicant: any) =>
+                          applicant.toString() === user._id.toString()
+                      );
+                      return (
+                        <p key={job._id}>
+                          <hr></hr>
+                          <div className="row">
+                          <div className="col center">
+                          <h3 className="name text">
+                            {job.title} at {job.company}
+                          </h3>
+                          {hasApplied ? (
+                            <button disabled className="buttonText">Applied</button>
+                          ) : (
+                            <button onClick={() => handleApply(job._id)} className="buttonText">
+                              Apply
+                            </button>
+                          )}
+                          </div>
+                          <div className="col">
+                          <div className="jobDescription">{job.description}</div>
+                          <div className="postFooter center margin10">Type: {job.type}</div>
+                          <div className="postFooter center margin10">Applicants: {job.applicants.length}</div>
+                          </div>
+                          </div>
+                        </p>
+                      );
+                    })}
+                  </ul>
+                )}
+                {/* <div className="notif">
                     <div className="circle1"></div>
                     Job 1
                 </div>
@@ -216,7 +280,8 @@ function Job() {
             </div>
             </div>
 
-        <div id="footer"></div>
+        <div id="footer"></div> */}
+        </div>
     </div>
   );
 }

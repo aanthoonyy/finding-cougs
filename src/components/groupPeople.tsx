@@ -199,14 +199,14 @@ function Group() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
+  const createPost = async (e) => {
+    navigate("/profile/post")
+  }
   const gotoPeople = async (e) => {
     navigate("/network/group/people") 
   }
   const gotoPosts = async (e) => {
     navigate("/network/group") 
-  }
-  const createPost = async (e) => {
-    navigate("/profile/post")
   }
   useEffect(() => {
     if (user) {
@@ -269,33 +269,17 @@ function Group() {
                         (member: any) => member.toString() === user._id.toString()
                       );
                       return (
-                    <><div className="name margin10">{community.name}</div>
-                    <div className="row center marginTop10 marginBottom10 grey">
-                          <div className="col d-flex center">
-                            <a onClick={gotoPosts} className="text bodyText marginLeft10 marginRight10 center">Posts</a>
-                            <a onClick={gotoPeople} className="text bodyText marginLeft10 marginRight10 center">People</a>
-                          </div>
-                        </div><div className="row center marginTop10 marginBottom10">
+                      <><div className="name margin10">{community.name}</div>
+                      <div className="row center marginTop10 marginBottom10 grey">
                             <div className="col d-flex center">
-                              <button onClick={createPost} type="submit" className="bodyText">Create Post</button>
+                              <a onClick={gotoPosts} className="text bodyText marginLeft10 marginRight10 center">Posts</a>
+                              <a onClick={gotoPeople} className="text bodyText marginLeft10 marginRight10 center">People</a>
                             </div>
-                          </div><h3 className="heading center">Feed</h3>
-                    {Array.isArray(feed) &&
-                      feed.map((u) => (
-                        <div key={u._id}>
-                          {/* <h3 className="bodyText">
-                            {u.name} (@{u.username})
-                          </h3> */}
-                          <ul className="bodyText">
-                            {u.posts?.map((post: any, idx: any) => (
-                              <ul key={idx} className="grey margin10 padding10 border border-danger">
-                                <ul className="post">{post.text}</ul>
-                                <ul className="postFooter">(Created by: {u.name} | Created: {new Date(post.createdAt).toLocaleString()})</ul>
-                              </ul>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}</>
+                          </div><div className="row center marginTop10 marginBottom10">
+                          <h3>Members</h3>
+                          <p>{community.members}</p>
+                          </div>
+                          </>
                     );
                   })}
                 </div>

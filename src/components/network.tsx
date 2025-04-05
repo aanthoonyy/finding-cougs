@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../design/main.css';
 import '../design/colors.css';
@@ -11,10 +11,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Network() {
   const [user, setUser] = useState(null);
-  const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [feed, setFeed] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);  
+  const [communities, setCommunities] = useState<any[]>([]);
 
   const navigate = useNavigate();
 
@@ -24,27 +23,69 @@ function Network() {
       navigate("/login");
       return;
     }
-
     const parsedUser = JSON.parse(storedUser);
-    fetchFullUser(parsedUser._id);
+    setUser(parsedUser);
+    fetchCommunities();
   }, [navigate]);
 
-  const fetchFullUser = async (userId: any) => {
+  const fetchCommunities = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`);
+      const response = await fetch("http://localhost:5000/network");
       const data = await response.json();
-      if (data.error) {
-        alert(data.error);
-        navigate("/login");
-      } else {
-        localStorage.setItem("user", JSON.stringify(data));
-        setUser(data);
-      }
+      setCommunities(data);
     } catch (err) {
-      console.error("Error fetching user:", err);
-      navigate("/login");
+      console.error("Error fetching communities:", err);
     }
   };
+  const handleJoin = async (communityId: string) => {
+    if (!user) return;
+    try {
+      const response = await fetch(
+        `http://localhost:5000/network/${communityId}/join`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id }),
+        }
+      );
+      const data = await response.json();
+      if (data.success) {
+        alert("Joined community successfully!");
+        fetchCommunities();
+      } else {
+        alert(data.error || "Failed to join community");
+      }
+    } catch (err) {
+      console.error("Error joining community:", err);
+      alert("Failed to join community");
+    }
+  };
+
+  const handleLeave = async (communityId: string) => {
+    if (!user) return;
+    try {
+      const response = await fetch(
+        `http://localhost:5000/network/${communityId}/leave`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id }),
+        }
+      );
+      const data = await response.json();
+      console.log("Leave response:", data);
+      if (data.success) {
+        alert("Left community successfully!");
+        fetchCommunities();
+      } else {
+        alert(data.error || "Failed to leave community");
+      }
+    } catch (err) {
+      console.error("Error leaving community:", err);
+      alert("Failed to leave community");
+    }
+  };
+
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -110,7 +151,7 @@ function Network() {
     navigate("/notification")
   }
   const gotoJob = async (e) => {
-    navigate("/job")
+    navigate("/jobs")
   }
   const gotoProfile = async (e) => {
     navigate("/profile")
@@ -172,9 +213,43 @@ function Network() {
             </div>
         </div>
         </div>
-            <div className="row paddingTop20">
-                <div className="col border10 margin20 secondary text-center">
-                    <h3 className="heading text">My Groups</h3>
+        <div className="row paddingTop20">
+          <div className="col border10 margin20 secondary center">
+              <h3 className="heading text">Groups</h3>
+                {communities.length === 0 ? (
+                  <h3 className="name text">No communities available.</h3>
+                ) : (
+                  <ul className="margin10">
+                    {communities.map((community) => {
+                      const isMember = community.members.some(
+                        (member: any) => member.toString() === user._id.toString()
+                      );
+                      return (
+                        <p key={community._id}>
+                          <hr></hr>
+                          <h3 className="name text">
+                            <a onClick={grabGroup} className="groupLink text">
+                              {community.name}
+                            </a></h3>
+                          <div>Members: {community.members.length}</div>
+                          <p className="bodyText">{community.description}</p>
+                          {isMember ? (
+                            <button onClick={() => handleLeave(community._id)} className="buttonText">
+                              Leave
+                            </button>
+                          ) : (
+                            <button onClick={() => handleJoin(community._id)} className="buttonText">
+                              Join
+                            </button>
+                          )}
+                        </p>
+                      );
+                    })}
+                  </ul>
+                )}
+        </div>
+        </div>
+            {/* 
                     <div className="notif">
                         <div className="circle1"></div>
                         <a onClick={grabGroup} className="groupLink text">Group 1</a>
@@ -209,8 +284,7 @@ function Network() {
                         <div className="circle1"></div>
                         <a onClick={grabGroup} className="groupLink text">Group 4</a>
                     </div>
-                </div>
-        </div>
+                 */}
     </div>
   );
 }

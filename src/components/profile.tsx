@@ -135,7 +135,7 @@ function Profile() {
     navigate("/notification")
   }
   const gotoJob = async (e) => {
-    navigate("/job")
+    navigate("/jobs")
   }
   const gotoProfile = async (e) => {
     navigate("/profile")
@@ -213,7 +213,7 @@ function Profile() {
                 </div>
                 <div className="row center marginTop10 marginBottom10">
                     <div className="col d-flex center">
-                    <button onClick={createPost} type="submit" className="buttonText">Create Post</button>
+                    <button onClick={createPost} type="submit" className="bodyText">Create Post</button>
                     </div>
                 </div>
 

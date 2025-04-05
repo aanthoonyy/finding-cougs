@@ -141,7 +141,7 @@ function Homepage() {
     navigate("/notification")
   }
   const gotoJob = async (e) => {
-    navigate("/job")
+    navigate("/jobs")
   }
   const gotoProfile = async (e) => {
     navigate("/profile")
@@ -222,7 +222,7 @@ function Homepage() {
           </div>
           <div className="col margin20 secondary center">
             <div className="heading">
-              <button onClick={createPost} type="submit" className="buttonText">Create Post</button>
+              <button onClick={createPost} type="submit" className="bodyText">Create Post</button>
               <div className="marginBottom10 center marginTop10">
                 <div className="row">
                 <h3 className="heading text center">Your Posts</h3>
