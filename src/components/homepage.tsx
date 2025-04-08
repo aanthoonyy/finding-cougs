@@ -6,12 +6,10 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-// import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Homepage() {
   const [user, setUser] = useState(null);
-  const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [feed, setFeed] = useState([]);
@@ -43,32 +41,6 @@ function Homepage() {
     } catch (err) {
       console.error("Error fetching user:", err);
       navigate("/login");
-    }
-  };
-
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
-    if (!user) return;
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${user._id}/posts`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: postText }),
-        }
-      );
-      const updatedUser = await response.json();
-
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-
-      setPostText("");
-      alert("Post created successfully!");
-    } catch (err) {
-      console.error("Error creating post:", err);
-      alert("Failed to create post");
     }
   };
 
@@ -126,10 +98,6 @@ function Homepage() {
       console.error("Error fetching feed:", err);
     }
   };
-
-  // const navigationBar = async (e) => {
-  //   return Bar()
-  // }
 
   const gotoHome = async (e) => {
     navigate("/homepage");
@@ -203,14 +171,9 @@ function Homepage() {
             </div>
         </div>
       </div>
-      {/* {navigationBar} */}
-      {/* <h1>{{ navbar }}</h1> */}
-      {/* < Bar.navbar /> */}
         <div className="row paddingTop20">
           <div className="col border10 margin20 secondary">
-            {/* <div className="circle text-center">
-              <div>profile picture</div>
-            </div> */}
+
             <div className="marginTop10 name">{user.name || user.email}</div>
 
             <div className="bodyText marginLeft10 marginTop20">
@@ -247,9 +210,6 @@ function Homepage() {
                     {Array.isArray(feed) &&
                       feed.map((u) => (
                         <div key={u._id}>
-                          {/* <h3 className="bodyText">
-                            {u.name} (@{u.username})
-                          </h3> */}
                           <ul className="bodyText">
                             {u.posts?.map((post: any, idx: any) => (
                               <ul key={idx} className="grey margin10 padding10 border border-danger">

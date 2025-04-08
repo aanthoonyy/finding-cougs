@@ -6,7 +6,6 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-// import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Post() {
@@ -127,10 +126,6 @@ function Post() {
     }
   };
 
-  // const navigationBar = async (e) => {
-  //   return Bar()
-  // }
-
   const gotoHome = async (e) => {
     navigate("/homepage");
   }
@@ -203,7 +198,6 @@ function Post() {
         <form onSubmit={handleCreatePost}>
             <div className="row paddingTop20">
                 <div className="col border10 margin20">
-                    {/* <div className="headPhoto">Insert Photo(s)/Video(s)</div> */}
                     <div className="margin10">
                         <input 
                         type="text" 

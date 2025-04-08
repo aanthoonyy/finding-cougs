@@ -6,12 +6,10 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Profile() {
   const [user, setUser] = useState(null);
-  const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [feed, setFeed] = useState([]);
@@ -100,31 +98,6 @@ function Profile() {
       console.error("Error fetching feed:", err);
     }
   };
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
-    if (!user) return;
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${user._id}/posts`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: postText }),
-        }
-      );
-      const updatedUser = await response.json();
-
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-
-      setPostText("");
-      alert("Post created successfully!");
-    } catch (err) {
-      console.error("Error creating post:", err);
-      alert("Failed to create post");
-    }
-};
   const gotoHome = async (e) => {
     navigate("/homepage");
   }
@@ -206,8 +179,6 @@ function Profile() {
         </div>
         <div className="row paddingTop20">
             <div className="col border10 margin20 secondary">
-                {/* <div className="headPhoto">Head Photo</div> */}
-                {/* <div className="circle text-center">Profile photo</div> */}
                 <div className="name center margin20">{user.name}</div>
                 <div className="bodyText center margin20">Following: {user.following.length} | Followers: {user.followers.length}</div>
 
@@ -240,8 +211,6 @@ function Profile() {
                 </div>
             </div>
             </div>
-
-        <div id="footer"></div>
     </div> 
   );
 }

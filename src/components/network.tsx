@@ -6,7 +6,6 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Network() {

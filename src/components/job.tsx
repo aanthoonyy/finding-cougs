@@ -6,7 +6,6 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Job() {
@@ -237,50 +236,6 @@ function Job() {
                     })}
                   </ul>
                 )}
-                {/* <div className="notif">
-                    <div className="circle1"></div>
-                    Job 1
-                </div>
-                <div className="notif">
-                    <div className="circle1"></div>
-                    Job 2
-                </div>
-                <div className="notif">
-                    <div className="circle1"></div>
-                    Job 3
-                </div>
-                <div className="notif">
-                    <div className="circle1"></div>
-                    Job 4
-                </div>
-            </div>
-            <div className="col border10 margin20 secondary text-center">
-                <h3 className="heading">
-                    Job Title
-                </h3>
-                <div className="container qualifications">
-                    <div className="row align-items-start">
-                        <div className="col">
-                        Qualification 1
-                        </div>
-                        <div className="col">
-                        Qualification 2
-                        </div>
-                        <div className="col">
-                        Qualification 3
-                        </div>
-                        <div className="col">
-                        Qualification 4
-                        </div>
-                    </div>
-                </div>
-                <div className="jobDescription">
-                    This is a lot of text which will be used for the job description section.
-                </div>
-            </div>
-            </div>
-
-        <div id="footer"></div> */}
         </div>
     </div>
   );

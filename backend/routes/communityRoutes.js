@@ -57,6 +57,9 @@ router.post('/network/:communityId/join', async (req, res) => {
       community.members.push(userId);
       await community.save();
     }
+    // const hold = community.members.find(userId);
+    // const hold = community.members.findIndex((element) => element === userId);
+    // console.log(hold);
 
     res.json({ success: true, community });
   } catch (err) {
@@ -93,6 +96,7 @@ router.post('/network/:communityId/leave', async (req, res) => {
     }
   });
 
+  //gets the community information given the community id
 router.post('/network/community', async (req, res) => {
   try {
       const {userId, communityId } = req.body;

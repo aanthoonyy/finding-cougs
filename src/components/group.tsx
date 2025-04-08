@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import '../design/main.css';
 import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useLocation } from "react-router";
 
@@ -44,71 +43,7 @@ function Group() {
       console.error("Error fetching communities:", err);
     }
   };
-  const handleJoin = async (communityId: string) => {
-    if (!user) return;
-    try {
-      const response = await fetch(
-        `http://localhost:5000/network/${communityId}/join`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user._id }),
-        }
-      );
-      const data = await response.json();
-      if (data.success) {
-        alert("Joined community successfully!");
-        fetchCommunities();
-      } else {
-        alert(data.error || "Failed to join community");
-      }
-    } catch (err) {
-      console.error("Error joining community:", err);
-      alert("Failed to join community");
-    }
-  };
-
-  const handleLeave = async (communityId: string) => {
-    if (!user) return;
-    try {
-      const response = await fetch(
-        `http://localhost:5000/network/${communityId}/leave`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user._id }),
-        }
-      );
-      const data = await response.json();
-      console.log("Leave response:", data);
-      if (data.success) {
-        alert("Left community successfully!");
-        fetchCommunities();
-      } else {
-        alert(data.error || "Failed to leave community");
-      }
-    } catch (err) {
-      console.error("Error leaving community:", err);
-      alert("Failed to leave community");
-    }
-  };
-  const fetchFullUser = async (userId: any) => {
-    try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`);
-      const data = await response.json();
-      if (data.error) {
-        alert(data.error);
-        navigate("/login");
-      } else {
-        localStorage.setItem("user", JSON.stringify(data));
-        setUser(data);
-      }
-    } catch (err) {
-      console.error("Error fetching user:", err);
-      navigate("/login");
-    }
-  };
-
+ 
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query) return;
@@ -163,31 +98,6 @@ function Group() {
       console.error("Error fetching feed:", err);
     }
   };
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
-    if (!user) return;
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${user._id}/posts`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: postText }),
-        }
-      );
-      const updatedUser = await response.json();
-
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-
-      setPostText("");
-      alert("Post created successfully!");
-    } catch (err) {
-      console.error("Error creating post:", err);
-      alert("Failed to create post");
-    }
-};
   const gotoHome = async (e) => {
     navigate("/homepage");
   }

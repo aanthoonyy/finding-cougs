@@ -6,12 +6,10 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Profile() {
   const [user, setUser] = useState(null);
-  const [postText, setPostText] = useState("");
   const [aboutMeText, setAboutMeText] = useState("");
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -152,9 +150,6 @@ function Profile() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
-  const createPost = async (e) => {
-    navigate("/profile/post")
-  }
   const gotoAboutMe = async (e) => {
     navigate("/profile/aboutMe") 
   }
@@ -218,8 +213,6 @@ function Profile() {
         </div>
         <div className="row paddingTop20">
             <div className="col border10 margin20 secondary">
-                {/* <div className="headPhoto">Head Photo</div> */}
-                {/* <div className="circle text-center">Profile photo</div> */}
                 <div className="name center margin20">{user.name}</div>
                 <div className="bodyText center margin20">Following: {user.following.length} | Followers: {user.followers.length}</div>
 
@@ -241,11 +234,9 @@ function Profile() {
                       <h3 className="heading">About Me</h3>
                       <p className="bodyText text">{user.aboutMe}</p>
                     </div>
-                    {/* <div className="feed marginBottom10 center marginTop10"> */}
                     <form onSubmit={handleCreateAboutMe}>
                       <div className="row paddingTop20">
                           <div className="col border10 margin20">
-                              {/* <div className="headPhoto">Insert Photo(s)/Video(s)</div> */}
                               <div className="margin10">
                                   <input 
                                   type="text" 
@@ -290,12 +281,9 @@ function Profile() {
                           </div>
                           </div>
                   </form>
-                    {/* </div> */}
                 </div>
             </div>
             </div>
-
-        <div id="footer"></div>
     </div> 
   );
 }

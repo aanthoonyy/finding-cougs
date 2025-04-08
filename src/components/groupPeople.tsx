@@ -6,12 +6,10 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Group() {
   const [user, setUser] = useState(null);
-  const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [feed, setFeed] = useState([]);
@@ -163,9 +161,6 @@ function Group() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
-  const createPost = async (e) => {
-    navigate("/profile/post")
-  }
   const gotoPosts = async (communityId: string) => {
 
     if (!user) return;
@@ -214,12 +209,6 @@ function Group() {
       alert("Failed to find community");
     }
   };
-  const checkMember = async (e) => {
-    if (!user) return;
-    const isMember = state.community.members.some(
-      (member: any) => member.toString() === user._id.toString());
-    return isMember;
-  }
   useEffect(() => {
     if (user) {
       fetchFeed();

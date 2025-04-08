@@ -21,10 +21,7 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/homepage" element={<Homepage />} />
-        {/* <Route path="/community" element={<CommunityPage />} />
-        <Route path="/jobs" element={<JobPage />} /> */}
         <Route path="/admin" element={<AdminPanel />} />
-
         <Route path="/network" element={<Network />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/jobs" element={<Job />} />
@@ -33,7 +30,6 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/network/group" element={<Group />} />
         <Route path="/profile/post" element={<Post />} />
         <Route path='/network/group/people' element={<GroupPeople />} />
-        {/* <Route path='/network/group/:communityId' element={<Group />} /> */}
       </Routes>
     </BrowserRouter>
   </StrictMode>
