@@ -6,12 +6,10 @@ import '../design/colors.css';
 import '../design/shapes.css';
 import '../design/alignment.css';
 import '../design/text.css';
-import { Bar } from './script';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Notification() {
   const [user, setUser] = useState(null);
-  const [postText, setPostText] = useState("");
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [feed, setFeed] = useState([]);
@@ -110,7 +108,7 @@ function Notification() {
     navigate("/notification")
   }
   const gotoJob = async (e) => {
-    navigate("/job")
+    navigate("/jobs")
   }
   const gotoProfile = async (e) => {
     navigate("/profile")
@@ -191,8 +189,6 @@ function Notification() {
                 </div>
             </div>
             </div>
-
-        <div id="footer"></div>
     </div>
   );
 }

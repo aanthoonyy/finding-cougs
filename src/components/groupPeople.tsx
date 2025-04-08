@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import '../design/main.css';
 import '../design/colors.css';
 import '../design/shapes.css';
@@ -8,12 +8,16 @@ import '../design/alignment.css';
 import '../design/text.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Network() {
+function Group() {
   const [user, setUser] = useState(null);
   const [query, setQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);  
+  const [searchResults, setSearchResults] = useState([]);
+  const [feed, setFeed] = useState([]);
   const [communities, setCommunities] = useState<any[]>([]);
-  const [findCommunity, setFindCommunity] = useState([])
+  const [findCommunity, setFindCommunity] = useState([]);
+  const {state} = useLocation();
+
+  
 
   const navigate = useNavigate();
 
@@ -85,7 +89,7 @@ function Network() {
       alert("Failed to leave community");
     }
   };
-
+  
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -141,6 +145,7 @@ function Network() {
       console.error("Error fetching feed:", err);
     }
   };
+  
   const gotoHome = async (e) => {
     navigate("/homepage");
   }
@@ -156,9 +161,7 @@ function Network() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
-
-
-  const grabGroup = async (communityId: string) => {
+  const gotoPosts = async (communityId: string) => {
 
     if (!user) return;
     try {
@@ -182,7 +185,30 @@ function Network() {
       alert("Failed to find community");
     }
   };
+  const gotoPeople = async (communityId: string) => {
 
+    if (!user) return;
+    try {
+      const response = await fetch(
+        "http://localhost:5000/network/community",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id, communityId: communityId }),
+        }
+      );
+     const data = await response.json();
+      setFindCommunity(data);
+      if (data.success) {
+        navigate("/network/group/people", { state: { community: data.community } })
+      } else {
+        alert(data.error || "Failed to get community");
+      }
+    } catch (err) {
+      console.error("Error finding community:", err);
+      alert("Failed to find community");
+    }
+  };
   useEffect(() => {
     if (user) {
       fetchFeed();
@@ -236,44 +262,32 @@ function Network() {
             </div>
         </div>
         </div>
-        <div className="row paddingTop20">
-          <div className="col border10 margin20 secondary center">
-              <h3 className="heading text">Groups</h3>
-                {communities.length === 0 ? (
-                  <h3 className="name text">No communities available.</h3>
-                ) : (
-                  <ul className="margin10">
-                    {communities.map((community) => {
-                      const isMember = community.members.some(
-                        (member: any) => member.toString() === user._id.toString()
-                      );
-                      return (
-                        <p key={community._id}>
-                          <hr></hr>
-                          <h3 className="name text">
-                            <a onClick={() => grabGroup(community._id)} className="groupLink text">
-                              {community.name}
-                            </a></h3>
-                          <div>Members: {community.members.length}</div>
-                          <p className="bodyText">{community.description}</p>
-                          {isMember ? (
-                            <button onClick={() => handleLeave(community._id)} className="buttonText">
-                              Leave
-                            </button>
-                          ) : (
-                            <button onClick={() => handleJoin(community._id)} className="buttonText">
-                              Join
-                            </button>
-                          )}
-                        </p>
-                      );
-                    })}
-                  </ul>
-                )}
-        </div>
-        </div>
-    </div>
+        <div className="row paddingTop20 center">
+                <div className="col border10 margin20 secondary text-center">
+                  <div className="name margin10">{state.community.name}</div>
+                  <div className="row center marginTop10 marginBottom10 grey">
+                        <div className="col d-flex center">
+                          <a onClick={() => gotoPosts(state.community._id)} className="text bodyText marginLeft10 marginRight10 center">Posts</a>
+                          <a onClick={() => gotoPeople(state.community._id)} className="text bodyText marginLeft10 marginRight10 center">People</a>
+                        </div>
+                      </div><div className="row center marginTop10 marginBottom10">
+                      <p key={state.community._id}>
+                      {(state.community.members.some((member: any) => member.toString() === user._id.toString())) ? (
+                          <button onClick={() => handleLeave(state.community._id)} className="buttonText">
+                            Leave
+                          </button>
+                        ) : (
+                          <button onClick={() => handleJoin(state.community._id)} className="buttonText">
+                            Join
+                          </button>
+                        )}</p>
+                      <h3>Members</h3>
+                      <p>{state.community.members}</p>
+                      </div>
+                </div>
+              </div>
+    </div> 
   );
 }
 
-export default Network;
+export default Group;

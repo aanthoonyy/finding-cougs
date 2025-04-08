@@ -11,6 +11,9 @@ const CommunitySchema = new mongoose.Schema({
   },
   members: [
     {
+      memberName : {
+        type: String
+      },
       type: mongoose.Schema.Types.ObjectId,
       ref: 'users',
     }

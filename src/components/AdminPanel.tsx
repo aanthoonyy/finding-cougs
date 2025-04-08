@@ -113,7 +113,7 @@ function AdminPanel() {
 
   const fetchCommunities = async () => {
     try {
-      const response = await fetch("http://localhost:5000/communities");
+      const response = await fetch("http://localhost:5000/network");
       const data = await response.json();
       setCommunities(data);
     } catch (err) {
@@ -124,7 +124,7 @@ function AdminPanel() {
   const handleAddCommunity = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/communities", {
+      const response = await fetch("http://localhost:5000/network", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -150,7 +150,7 @@ function AdminPanel() {
   const handleDeleteCommunity = async (communityId: string) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/communities/${communityId}`,
+        `http://localhost:5000/network/${communityId}`,
         {
           method: "DELETE",
         }

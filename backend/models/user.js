@@ -26,6 +26,9 @@ const UserSchema = new mongoose.Schema({
   ],
   followers: [
     {
+      followerName : {
+        type: String
+      },
       type: mongoose.Schema.Types.ObjectId,
       ref: 'users',
       default: [],
@@ -33,10 +36,25 @@ const UserSchema = new mongoose.Schema({
   ],
   following: [
     {
+      followingName : {
+        type: String
+      },
       type: mongoose.Schema.Types.ObjectId,
       ref: 'users', 
     }
   ],
+  aboutMe: {
+    type: String,
+  },
+  major: {
+    type: String,
+  },
+  age: {
+    type: Number,
+  },
+  ethnicity: {
+    type: String,
+  },
 });
 
 UserSchema.index({ email: 1 }, { unique: true });

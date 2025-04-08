@@ -3,7 +3,7 @@ const router = express.Router();
 const Community = require('../models/community');
 
 // GET /communities - list all communities
-router.get('/communities', async (req, res) => {
+router.get('/network', async (req, res) => {
   try {
     const communities = await Community.find({});
     res.json(communities);
@@ -14,7 +14,7 @@ router.get('/communities', async (req, res) => {
 });
 
 // POST /communities - create a new community
-router.post('/communities', async (req, res) => {
+router.post('/network', async (req, res) => {
   try {
     const { name, description } = req.body;
     const community = new Community({ name, description });
@@ -27,7 +27,7 @@ router.post('/communities', async (req, res) => {
 });
 
 // DELETE /communities/:communityId - delete a community
-router.delete('/communities/:communityId', async (req, res) => {
+router.delete('/network/:communityId', async (req, res) => {
     try {
       const { communityId } = req.params;
       await Community.findByIdAndDelete(communityId);
@@ -39,7 +39,7 @@ router.delete('/communities/:communityId', async (req, res) => {
   });
 
 // POST /communities/:communityId/join - join a community
-router.post('/communities/:communityId/join', async (req, res) => {
+router.post('/network/:communityId/join', async (req, res) => {
   try {
     const { communityId } = req.params;
     const { userId } = req.body;
@@ -57,6 +57,9 @@ router.post('/communities/:communityId/join', async (req, res) => {
       community.members.push(userId);
       await community.save();
     }
+    // const hold = community.members.find(userId);
+    // const hold = community.members.findIndex((element) => element === userId);
+    // console.log(hold);
 
     res.json({ success: true, community });
   } catch (err) {
@@ -66,7 +69,7 @@ router.post('/communities/:communityId/join', async (req, res) => {
 });
 
 // Leave a community: POST /communities/:communityId/leave
-router.post('/communities/:communityId/leave', async (req, res) => {
+router.post('/network/:communityId/leave', async (req, res) => {
     try {
       const { communityId } = req.params;
       const { userId } = req.body;
@@ -92,6 +95,27 @@ router.post('/communities/:communityId/leave', async (req, res) => {
       res.status(500).send('Something Went Wrong');
     }
   });
+
+  //gets the community information given the community id
+router.post('/network/community', async (req, res) => {
+  try {
+      const {userId, communityId } = req.body;
+      //const query = req.query.query;
+      if (!userId) {
+        return res.status(400).json({ error: 'UserId is required' });
+      }
+      const community = await Community.findById(communityId);
+      if (!community) {
+        return res.status(404).json({ error: 'Community not found' });
+      }
+  
+      res.json({ success: true, community });
+    } catch (err) {
+      console.error('Error searching communities:', err);
+      res.status(500).send('Something Went Wrong');
+    }
+    
+})
   
 
 module.exports = router;
