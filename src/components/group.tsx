@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import '../design/main.css';
 import '../design/colors.css';
 import '../design/shapes.css';
@@ -16,6 +16,7 @@ function Group() {
   const [searchResults, setSearchResults] = useState([]);
   const [feed, setFeed] = useState([]);
   const [communities, setCommunities] = useState<any[]>([]);
+  const { community } = useParams();
   
 
   const navigate = useNavigate();
@@ -31,6 +32,11 @@ function Group() {
     fetchCommunities();
   }, [navigate]);
 
+  // const checkCommunity = async () => {
+  //   if (!community) {
+  //     console.error("Community was not passed");
+  //   }
+  // }
   const fetchCommunities = async () => {
     try {
       const response = await fetch("http://localhost:5000/network");
@@ -217,7 +223,7 @@ function Group() {
   if (!user) {
     return <div>Loading...</div>;
   }
-
+  if (community !== undefined) {
   return (
     <div className="primary">
         <form onSubmit={handleSearch} className="padding10 rightAlign">
@@ -263,13 +269,18 @@ function Group() {
         </div>
         <div className="row paddingTop20 center">
                 <div className="col border10 margin20 secondary text-center">
-                    {/* <div className="headPhoto">Head Photo</div> */}
-                    {communities.map((community) => {
+                    {/* <div className="headPhoto">Head Photo</div>  */}
+                    {/* {communities.map((community) => {
                       const isMember = community.members.some(
                         (member: any) => member.toString() === user._id.toString()
                       );
-                      return (
-                    <><div className="name margin10">{community.name}</div>
+                      return ( */}
+                    <div className="name margin10">{community}</div>
+                    {/* {community !== undefined && (
+                        <div className="name margin10">{community.name}</div>
+                      )} */}
+                    {/* {community === undefined && (<div {...gotoNet}></div>)} */}
+                    
                     <div className="row center marginTop10 marginBottom10 grey">
                           <div className="col d-flex center">
                             <a onClick={gotoPosts} className="text bodyText marginLeft10 marginRight10 center">Posts</a>
@@ -284,8 +295,8 @@ function Group() {
                       feed.map((u) => (
                         <div key={u._id}>
                           {/* <h3 className="bodyText">
-                            {u.name} (@{u.username})
-                          </h3> */}
+                            {u.name} (@{u.username}) 
+                          </h3>*/}
                           <ul className="bodyText">
                             {u.posts?.map((post: any, idx: any) => (
                               <ul key={idx} className="grey margin10 padding10 border border-danger">
@@ -295,13 +306,17 @@ function Group() {
                             ))}
                           </ul>
                         </div>
-                      ))}</>
-                    );
-                  })}
+                      ))}
+                    {/* );
+                  })} */}
                 </div>
               </div>
     </div> 
   );
+} else {
+  return gotoNet()
+}
 }
 
 export default Group;
+

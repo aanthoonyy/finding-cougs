@@ -93,32 +93,29 @@ router.post('/network/:communityId/leave', async (req, res) => {
     }
   });
 
-router.get('/network/group/:communityId', async (req, res) => {
- try {
-  const { communityId } = req.params;
-  const { userId } = req.body;
+router.get('/network/group', async (req, res) => {
+  try {
+    const { communityId } = req.params;
+    const { userId } = req.body;
 
-  if (!userId) {
-    return res.status(400).json({ error: 'UserId is required' });
+    if (!userId) {
+      return res.status(400).json({ error: 'UserId is required' });
+    }
+    if (!communityId) {
+      return res.status(400).json({ error: 'CommunityId is required' });
+    }
+
+    const community = await Community.findById(communityId);
+    if (!community) {
+      return res.status(404).json({ error: 'Community not found' });
+    }
+
+    res.json({ success: true, community });
+  } catch (err) {
+    console.error('Error going to community:', err);
+    res.status(500).send('Something Went Wrong');
   }
-
-  const community = await Community.findById(communityId);
-  if (!community) {
-    return res.status(404).json({ error: 'Community not found' });
-  }
-
-  // if (!community.members.includes(userId)) {
-  //   community.members.push(userId);
-  //   await community.save();
-  // }
-
-
-  res.json({ success: true, community });
-  // res.render('../../src/components/group', {community: community})
-} catch (err) {
-  console.error('Error going to community:', err);
-  res.status(500).send('Something Went Wrong');
-}
+  
 })
   
 

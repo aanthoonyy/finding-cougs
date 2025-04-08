@@ -158,25 +158,27 @@ function Network() {
   }
   // const grabGroup = async (e) => {
   //   //replace with getting group id and displaying it
-  //   navigate("/network/group:communityId")
+  //   navigate("/network/group/:communityId")
   // }
 
   //NEED TO FIX
   const grabGroup = async (communityId: string) => {
+
     if (!user) return;
     try {
       const response = await fetch(
-        `http://localhost:5000/network/group/${communityId}`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user._id }),
-        }
+        `http://localhost:5000/network/group?communityId=${communityId}&userId=${user._id}`,
+        // {
+          // method: "GET",
+          // headers: { "Content-Type": "application/json" },
+          // body: JSON.stringify({ userId: user._id }),
+        // }
       );
       const data = await response.json();
       // setCommunities(data);
+      alert(data.community.name)
       if (data.success) {
-        navigate("/network/group", { state: { name:data.name } })
+        navigate(`/network/group`, { state: { community: data.community.name } })
       } else {
         alert(data.error || "Failed to find community");
       }

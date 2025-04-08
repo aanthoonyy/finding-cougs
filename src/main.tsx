@@ -31,6 +31,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/network/group" element={<Group />} />
         <Route path="/profile/post" element={<Post />} />
         <Route path='/network/group/people' element={<GroupPeople />} />
+        {/* <Route path='/network/group/:communityId' element={<Group />} /> */}
       </Routes>
     </BrowserRouter>
   </StrictMode>
