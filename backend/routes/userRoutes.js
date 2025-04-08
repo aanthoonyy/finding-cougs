@@ -186,4 +186,36 @@ router.delete('/users/:userId', async (req, res) => {
   }
 });
 
+//handle new user information
+router.post('/users/:userId/aboutme', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { aboutMe, major, age, ethnicity } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    if (aboutMe) {
+      user.aboutMe = aboutMe; 
+    }
+    if (major) {
+      user.major = major;
+    }
+    if (age) {
+      user.age = age;
+    }
+    if (ethnicity) {
+      user.ethnicity = ethnicity;
+    }
+    
+    await user.save();
+
+    res.json(user);
+  } catch (err) {
+    console.error('Error creating post:', err);
+    res.status(500).send('Something Went Wrong');
+  }
+});
+
 module.exports = router;

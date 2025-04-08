@@ -37,6 +37,18 @@ const UserSchema = new mongoose.Schema({
       ref: 'users', 
     }
   ],
+  aboutMe: {
+    type: String,
+  },
+  major: {
+    type: String,
+  },
+  age: {
+    type: Number,
+  },
+  ethnicity: {
+    type: String,
+  },
 });
 
 UserSchema.index({ email: 1 }, { unique: true });

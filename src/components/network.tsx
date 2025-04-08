@@ -166,14 +166,16 @@ function Network() {
 
     if (!user) return;
     try {
+      alert("before fetch")
       const response = await fetch(
-        `http://localhost:5000/network/group?communityId=${communityId}&userId=${user._id}`,
+        `http://localhost:5000/network/group?communityId=${communityId}&userId=${user._id}`
         // {
           // method: "GET",
           // headers: { "Content-Type": "application/json" },
           // body: JSON.stringify({ userId: user._id }),
         // }
       );
+      alert("after fetch")
       const data = await response.json();
       // setCommunities(data);
       alert(data.community.name)

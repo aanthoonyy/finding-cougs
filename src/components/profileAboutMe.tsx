@@ -12,9 +12,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Profile() {
   const [user, setUser] = useState(null);
   const [postText, setPostText] = useState("");
+  const [aboutMeText, setAboutMeText] = useState("");
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [feed, setFeed] = useState([]);
+  const [majorText, setMajorText] = useState("");
+  const [ageText, setAgeText] = useState("");
+  const [ethnicityText, setEthnicityText] = useState("");
+
 
   const navigate = useNavigate();
 
@@ -100,17 +105,20 @@ function Profile() {
       console.error("Error fetching feed:", err);
     }
   };
-  const handleCreatePost = async (e) => {
+  const handleCreateAboutMe = async (e) => {
     e.preventDefault();
     if (!user) return;
 
     try {
       const response = await fetch(
-        `http://localhost:5000/users/${user._id}/posts`,
+        `http://localhost:5000/users/${user._id}/aboutme`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: postText }),
+          body: JSON.stringify({ aboutMe: aboutMeText, 
+            major: majorText, 
+            age: ageText, 
+            ethnicity: ethnicityText }),
         }
       );
       const updatedUser = await response.json();
@@ -118,13 +126,17 @@ function Profile() {
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setUser(updatedUser);
 
-      setPostText("");
-      alert("Post created successfully!");
+      setAboutMeText("");
+      setMajorText("");
+      setAgeText("");
+      setEthnicityText("");
+      alert("Information created successfully!");
     } catch (err) {
-      console.error("Error creating post:", err);
-      alert("Failed to create post");
+      console.error("Error adding information:", err);
+      alert("Failed to add information");
     }
 };
+
   const gotoHome = async (e) => {
     navigate("/homepage");
   }
@@ -140,14 +152,14 @@ function Profile() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
+  const createPost = async (e) => {
+    navigate("/profile/post")
+  }
   const gotoAboutMe = async (e) => {
     navigate("/profile/aboutMe") 
   }
   const gotoPosts = async (e) => {
     navigate("/profile") 
-  }
-  const createPost = async (e) => {
-    navigate("/profile/post")
   }
 
   useEffect(() => {
@@ -217,26 +229,68 @@ function Profile() {
                     <a onClick={gotoAboutMe} className="text bodyText marginLeft10 marginRight10 center">About Me</a>
                     </div>
                 </div>
-                <div className="row center marginTop10 marginBottom10">
-                    <div className="col d-flex center">
-                    <button onClick={createPost} type="submit" className="bodyText">Create Post</button>
-                    </div>
-                </div>
 
                 <div className="heading center">
-                    <div className="feed marginBottom10 center marginTop10">
-                        <div className="row">
-                        <h3 className="heading text">Your Posts</h3>
-                        <ul>
-                          {user.posts?.map((p, index) => (
-                            <ul key={index} className="grey margin10 padding10 border border-danger">
-                              <ul className="post center">{p.text}</ul> 
-                              <ul className="postFooter">(Created by: {user.name} | Created: {new Date(p.createdAt).toLocaleString()})</ul>
-                            </ul>
-                          ))}
-                        </ul>
-                        </div>
+                    <div>
+                      <div className="row heading marginTop20">
+                        <div className="col">Major: {user.major}</div>
+                        <div className="col">Age: {user.age}</div>
+                        <div className="col">Ethnicity: {user.ethnicity}</div>
+                      </div>
+                      
+                      <h3 className="heading">About Me</h3>
+                      <p className="bodyText text">{user.aboutMe}</p>
                     </div>
+                    {/* <div className="feed marginBottom10 center marginTop10"> */}
+                    <form onSubmit={handleCreateAboutMe}>
+                      <div className="row paddingTop20">
+                          <div className="col border10 margin20">
+                              {/* <div className="headPhoto">Insert Photo(s)/Video(s)</div> */}
+                              <div className="margin10">
+                                  <input 
+                                  type="text" 
+                                  className="form-control bodyText text" 
+                                  id="major" 
+                                  name="major" 
+                                  placeholder="Your Major"
+                                  value={majorText}
+                                  onChange={(e) => setMajorText(e.target.value)}/>
+                              </div>
+                              <div className="margin10">
+                                  <input 
+                                  type="text" 
+                                  className="form-control bodyText text" 
+                                  id="age" 
+                                  name="age" 
+                                  placeholder="Your Age"
+                                  value={ageText}
+                                  onChange={(e) => setAgeText(e.target.value)}/>
+                              </div>
+                              <div className="margin10">
+                                  <input 
+                                  type="text" 
+                                  className="form-control bodyText text" 
+                                  id="ethnicity" 
+                                  name="ethnicity" 
+                                  placeholder="Ethnicity"
+                                  value={ethnicityText}
+                                  onChange={(e) => setEthnicityText(e.target.value)}/>
+                              </div>
+                              <div className="margin10">
+                                  <input 
+                                  type="text" 
+                                  className="form-control bodyText text" 
+                                  id="aboutMe" 
+                                  name="aboutMe" 
+                                  placeholder="About Me"
+                                  value={aboutMeText}
+                                  onChange={(e) => setAboutMeText(e.target.value)}/>
+                              </div>
+                              <button type="submit" className="btn btn-primary center buttonText">Submit</button>
+                          </div>
+                          </div>
+                  </form>
+                    {/* </div> */}
                 </div>
             </div>
             </div>

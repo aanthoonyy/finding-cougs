@@ -97,7 +97,7 @@ router.get('/network/group', async (req, res) => {
   try {
     const { communityId } = req.params;
     const { userId } = req.body;
-
+    console.log("in get request function")
     if (!userId) {
       return res.status(400).json({ error: 'UserId is required' });
     }
