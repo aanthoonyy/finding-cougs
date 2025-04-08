@@ -157,12 +157,8 @@ function Network() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
-  // const grabGroup = async (e) => {
-  //   //replace with getting group id and displaying it
-  //   navigate("/network/group/:communityId")
-  // }
 
-  //NEED TO FIX
+
   const grabGroup = async (communityId: string) => {
 
     if (!user) return;
@@ -177,7 +173,6 @@ function Network() {
       );
      const data = await response.json();
       setFindCommunity(data);
-      // alert(data.community.name)
       if (data.success) {
         navigate(`/network/group`, { state: { community: data.community } })
       } else {
@@ -278,42 +273,6 @@ function Network() {
                 )}
         </div>
         </div>
-            {/* 
-                    <div className="notif">
-                        <div className="circle1"></div>
-                        <a onClick={grabGroup} className="groupLink text">Group 1</a>
-                    </div>
-                    <div className="notif">
-                        <div className="circle1"></div>
-                        <a onClick={grabGroup} className="groupLink text">Group 2</a>
-                    </div>
-                    <div className="notif">
-                        <div className="circle1"></div>
-                        <a onClick={grabGroup} className="groupLink text">Group 3</a>
-                    </div>
-                    <div className="notif">
-                        <div className="circle1"></div>
-                        <a onClick={grabGroup} className="groupLink text">Group 4</a>
-                    </div>
-
-                    <h3 className="heading text">Recommended Groups</h3>
-                    <div className="notif">
-                        <div className="circle1"></div>
-                        <a onClick={grabGroup} className="groupLink text">Group 1</a>
-                    </div>
-                    <div className="notif">
-                        <div className="circle1"></div>
-                        <a onClick={grabGroup} className="groupLink text">Group 2</a>
-                    </div>
-                    <div className="notif">
-                        <div className="circle1"></div>
-                        <a onClick={grabGroup} className="groupLink text">Group 3</a>
-                    </div>
-                    <div className="notif">
-                        <div className="circle1"></div>
-                        <a onClick={grabGroup} className="groupLink text">Group 4</a>
-                    </div>
-                 */}
     </div>
   );
 }

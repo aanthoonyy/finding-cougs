@@ -97,8 +97,6 @@ router.post('/network/community', async (req, res) => {
   try {
       const {userId, communityId } = req.body;
       //const query = req.query.query;
-      console.log("community id: ", communityId);
-
       if (!userId) {
         return res.status(400).json({ error: 'UserId is required' });
       }
@@ -106,7 +104,6 @@ router.post('/network/community', async (req, res) => {
       if (!community) {
         return res.status(404).json({ error: 'Community not found' });
       }
-      console.log("Comm: ", community)
   
       res.json({ success: true, community });
     } catch (err) {

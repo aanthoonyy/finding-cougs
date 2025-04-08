@@ -17,7 +17,7 @@ function Group() {
   const [searchResults, setSearchResults] = useState([]);
   const [feed, setFeed] = useState([]);
   const [communities, setCommunities] = useState<any[]>([]);
-  // const { community } = useParams();
+  const [findCommunity, setFindCommunity] = useState([])
   const {state} = useLocation();
   
 
@@ -34,11 +34,7 @@ function Group() {
     fetchCommunities();
   }, [navigate]);
 
-  // const checkCommunity = async () => {
-  //   if (!community) {
-  //     console.error("Community was not passed");
-  //   }
-  // }
+
   const fetchCommunities = async () => {
     try {
       const response = await fetch("http://localhost:5000/network");
@@ -207,15 +203,58 @@ function Group() {
   const gotoProfile = async (e) => {
     navigate("/profile")
   }
-  const gotoPeople = async (e) => {
-    navigate("/network/group/people") 
-  }
-  const gotoPosts = async (e) => {
-    navigate("/network/group") 
-  }
+
   const createPost = async (e) => {
     navigate("/profile/post")
   }
+  const gotoPosts = async (communityId: string) => {
+
+    if (!user) return;
+    try {
+      const response = await fetch(
+        "http://localhost:5000/network/community",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id, communityId: communityId }),
+        }
+      );
+     const data = await response.json();
+      setFindCommunity(data);
+      if (data.success) {
+        navigate(`/network/group`, { state: { community: data.community } })
+      } else {
+        alert(data.error || "Failed to get community");
+      }
+    } catch (err) {
+      console.error("Error finding community:", err);
+      alert("Failed to find community");
+    }
+  };
+  const gotoPeople = async (communityId: string) => {
+
+    if (!user) return;
+    try {
+      const response = await fetch(
+        "http://localhost:5000/network/community",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id, communityId: communityId }),
+        }
+      );
+     const data = await response.json();
+      setFindCommunity(data);
+      if (data.success) {
+        navigate("/network/group/people", { state: { community: data.community } })
+      } else {
+        alert(data.error || "Failed to get community");
+      }
+    } catch (err) {
+      console.error("Error finding community:", err);
+      alert("Failed to find community");
+    }
+  };
   useEffect(() => {
     if (user) {
       fetchFeed();
@@ -225,7 +264,6 @@ function Group() {
   if (!user) {
     return <div>Loading...</div>;
   }
-  console.log(state.community)
   if (state.community) {
     return (
       <div className="primary">
@@ -275,8 +313,8 @@ function Group() {
                       <div className="name margin10">{state.community.name}</div>
                       <div className="row center marginTop10 marginBottom10 grey">
                             <div className="col d-flex center">
-                              <a onClick={gotoPosts} className="text bodyText marginLeft10 marginRight10 center">Posts</a>
-                              <a onClick={gotoPeople} className="text bodyText marginLeft10 marginRight10 center">People</a>
+                              <a onClick={() => gotoPosts(state.community._id)} className="text bodyText marginLeft10 marginRight10 center">Posts</a>
+                              <a onClick={() => gotoPeople(state.community._id)} className="text bodyText marginLeft10 marginRight10 center">People</a>
                             </div>
                           </div><div className="row center marginTop10 marginBottom10">
                               <div className="col d-flex center">

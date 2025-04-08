@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import '../design/main.css';
 import '../design/colors.css';
 import '../design/shapes.css';
@@ -16,6 +16,9 @@ function Group() {
   const [searchResults, setSearchResults] = useState([]);
   const [feed, setFeed] = useState([]);
   const [communities, setCommunities] = useState<any[]>([]);
+  const [findCommunity, setFindCommunity] = useState([]);
+  const {state} = useLocation();
+
   
 
   const navigate = useNavigate();
@@ -88,22 +91,7 @@ function Group() {
       alert("Failed to leave community");
     }
   };
-  const fetchFullUser = async (userId: any) => {
-    try {
-      const response = await fetch(`http://localhost:5000/users/${userId}`);
-      const data = await response.json();
-      if (data.error) {
-        alert(data.error);
-        navigate("/login");
-      } else {
-        localStorage.setItem("user", JSON.stringify(data));
-        setUser(data);
-      }
-    } catch (err) {
-      console.error("Error fetching user:", err);
-      navigate("/login");
-    }
-  };
+  
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -159,31 +147,7 @@ function Group() {
       console.error("Error fetching feed:", err);
     }
   };
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
-    if (!user) return;
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${user._id}/posts`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: postText }),
-        }
-      );
-      const updatedUser = await response.json();
-
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-
-      setPostText("");
-      alert("Post created successfully!");
-    } catch (err) {
-      console.error("Error creating post:", err);
-      alert("Failed to create post");
-    }
-};
+  
   const gotoHome = async (e) => {
     navigate("/homepage");
   }
@@ -202,12 +166,54 @@ function Group() {
   const createPost = async (e) => {
     navigate("/profile/post")
   }
-  const gotoPeople = async (e) => {
-    navigate("/network/group/people") 
-  }
-  const gotoPosts = async (e) => {
-    navigate("/network/group") 
-  }
+  const gotoPosts = async (communityId: string) => {
+
+    if (!user) return;
+    try {
+      const response = await fetch(
+        "http://localhost:5000/network/community",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id, communityId: communityId }),
+        }
+      );
+     const data = await response.json();
+      setFindCommunity(data);
+      if (data.success) {
+        navigate(`/network/group`, { state: { community: data.community } })
+      } else {
+        alert(data.error || "Failed to get community");
+      }
+    } catch (err) {
+      console.error("Error finding community:", err);
+      alert("Failed to find community");
+    }
+  };
+  const gotoPeople = async (communityId: string) => {
+
+    if (!user) return;
+    try {
+      const response = await fetch(
+        "http://localhost:5000/network/community",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id, communityId: communityId }),
+        }
+      );
+     const data = await response.json();
+      setFindCommunity(data);
+      if (data.success) {
+        navigate("/network/group/people", { state: { community: data.community } })
+      } else {
+        alert(data.error || "Failed to get community");
+      }
+    } catch (err) {
+      console.error("Error finding community:", err);
+      alert("Failed to find community");
+    }
+  };
   useEffect(() => {
     if (user) {
       fetchFeed();
@@ -263,25 +269,16 @@ function Group() {
         </div>
         <div className="row paddingTop20 center">
                 <div className="col border10 margin20 secondary text-center">
-                    {/* <div className="headPhoto">Head Photo</div> */}
-                    {communities.map((community) => {
-                      const isMember = community.members.some(
-                        (member: any) => member.toString() === user._id.toString()
-                      );
-                      return (
-                      <><div className="name margin10">{community.name}</div>
-                      <div className="row center marginTop10 marginBottom10 grey">
-                            <div className="col d-flex center">
-                              <a onClick={gotoPosts} className="text bodyText marginLeft10 marginRight10 center">Posts</a>
-                              <a onClick={gotoPeople} className="text bodyText marginLeft10 marginRight10 center">People</a>
-                            </div>
-                          </div><div className="row center marginTop10 marginBottom10">
-                          <h3>Members</h3>
-                          <p>{community.members}</p>
-                          </div>
-                          </>
-                    );
-                  })}
+                  <div className="name margin10">{state.community.name}</div>
+                  <div className="row center marginTop10 marginBottom10 grey">
+                        <div className="col d-flex center">
+                          <a onClick={() => gotoPosts(state.community._id)} className="text bodyText marginLeft10 marginRight10 center">Posts</a>
+                          <a onClick={() => gotoPeople(state.community._id)} className="text bodyText marginLeft10 marginRight10 center">People</a>
+                        </div>
+                      </div><div className="row center marginTop10 marginBottom10">
+                      <h3>Members</h3>
+                      <p>{state.community.members}</p>
+                      </div>
                 </div>
               </div>
     </div> 
