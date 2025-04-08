@@ -214,6 +214,12 @@ function Group() {
       alert("Failed to find community");
     }
   };
+  const checkMember = async (e) => {
+    if (!user) return;
+    const isMember = state.community.members.some(
+      (member: any) => member.toString() === user._id.toString());
+    return isMember;
+  }
   useEffect(() => {
     if (user) {
       fetchFeed();
@@ -276,6 +282,16 @@ function Group() {
                           <a onClick={() => gotoPeople(state.community._id)} className="text bodyText marginLeft10 marginRight10 center">People</a>
                         </div>
                       </div><div className="row center marginTop10 marginBottom10">
+                      <p key={state.community._id}>
+                      {(state.community.members.some((member: any) => member.toString() === user._id.toString())) ? (
+                          <button onClick={() => handleLeave(state.community._id)} className="buttonText">
+                            Leave
+                          </button>
+                        ) : (
+                          <button onClick={() => handleJoin(state.community._id)} className="buttonText">
+                            Join
+                          </button>
+                        )}</p>
                       <h3>Members</h3>
                       <p>{state.community.members}</p>
                       </div>
