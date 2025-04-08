@@ -14,6 +14,7 @@ function Network() {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);  
   const [communities, setCommunities] = useState<any[]>([]);
+  const [findCommunity, setFindCommunity] = useState([])
 
   const navigate = useNavigate();
 
@@ -166,23 +167,21 @@ function Network() {
 
     if (!user) return;
     try {
-      alert("before fetch")
       const response = await fetch(
-        `http://localhost:5000/network/group?communityId=${communityId}&userId=${user._id}`
-        // {
-          // method: "GET",
-          // headers: { "Content-Type": "application/json" },
-          // body: JSON.stringify({ userId: user._id }),
-        // }
+        "http://localhost:5000/network/community",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user._id, communityId: communityId }),
+        }
       );
-      alert("after fetch")
-      const data = await response.json();
-      // setCommunities(data);
-      alert(data.community.name)
+     const data = await response.json();
+      setFindCommunity(data);
+      // alert(data.community.name)
       if (data.success) {
-        navigate(`/network/group`, { state: { community: data.community.name } })
+        navigate(`/network/group`, { state: { community: data.community } })
       } else {
-        alert(data.error || "Failed to find community");
+        alert(data.error || "Failed to get community");
       }
     } catch (err) {
       console.error("Error finding community:", err);

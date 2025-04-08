@@ -93,29 +93,27 @@ router.post('/network/:communityId/leave', async (req, res) => {
     }
   });
 
-router.get('/network/group', async (req, res) => {
+router.post('/network/community', async (req, res) => {
   try {
-    const { communityId } = req.params;
-    const { userId } = req.body;
-    console.log("in get request function")
-    if (!userId) {
-      return res.status(400).json({ error: 'UserId is required' });
-    }
-    if (!communityId) {
-      return res.status(400).json({ error: 'CommunityId is required' });
-    }
+      const {userId, communityId } = req.body;
+      //const query = req.query.query;
+      console.log("community id: ", communityId);
 
-    const community = await Community.findById(communityId);
-    if (!community) {
-      return res.status(404).json({ error: 'Community not found' });
-    }
-
-    res.json({ success: true, community });
-  } catch (err) {
-    console.error('Error going to community:', err);
-    res.status(500).send('Something Went Wrong');
-  }
+      if (!userId) {
+        return res.status(400).json({ error: 'UserId is required' });
+      }
+      const community = await Community.findById(communityId);
+      if (!community) {
+        return res.status(404).json({ error: 'Community not found' });
+      }
+      console.log("Comm: ", community)
   
+      res.json({ success: true, community });
+    } catch (err) {
+      console.error('Error searching communities:', err);
+      res.status(500).send('Something Went Wrong');
+    }
+    
 })
   
 
